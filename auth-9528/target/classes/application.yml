@@ -1,0 +1,48 @@
+# 服务端口号
+server:
+  port: 8444
+
+# 服务名
+spring:
+  application:
+    name: auth-service
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: org.gjt.mm.mysql.Driver
+    url: jdbc:mysql://rm-bp167k6429i8drmq71o.mysql.rds.aliyuncs.com:3306/work_platform?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: wanna959
+    password: Zhujianxing959
+  redis:
+    database: 0
+    host: 47.110.79.125
+    port: 6379
+    password: zhujianxing959
+  mail:
+    host: smtp.163.com
+    port: 465
+    username: wannazjx@163.com
+    password: LQXFREUCTGRHLVQP
+    protocol: smtps
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+  cloud:
+    # 注册进 nacos Server
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.godx.cloud.entities  # 所有Entity 别名类所在包
+  configuration:
+    map-underscore-to-camel-case: true
+
+# actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

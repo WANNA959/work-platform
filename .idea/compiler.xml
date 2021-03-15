@@ -7,6 +7,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="api-commons" />
+        <module name="auth-9528" />
+        <module name="api-test" />
+        <module name="gateway-9527" />
       </profile>
     </annotationProcessing>
   </component>
