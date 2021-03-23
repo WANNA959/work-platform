@@ -14,7 +14,7 @@
         select * from user where email = #{email};
     </select>
 
-    <insert id="insertUser" keyProperty="id">
+    <insert id="insertUser" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO `user` (`username`, `password`, `salt`, `email`, `type`, `status`, `activation_code`, `header_url`, `create_time`, `update_time`)
         VALUES
         (#{username}, #{password}, #{salt}, #{email}, #{type}, #{status}, #{activationCode}, #{headerUrl}, #{createTime}, #{updateTime})
@@ -23,6 +23,16 @@
     <update id="updateStatusById">
         update user set status=#{status} where id=#{id}
     </update>
+
+    <update id="updateCodeById">
+        update user set reset_code=#{code} where id=#{id}
+    </update>
+
+    <update id="updatePassById">
+        update user set password=#{pass} where id=#{id}
+    </update>
+
+
 
 <!--    <resultMap id="BaseResultMap" type="User">-->
 <!--        <id column="id" property="id" jdbcType="INT"/>-->

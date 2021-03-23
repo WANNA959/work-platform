@@ -1,4 +1,5 @@
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/api-commons/src/main/java/com/godx/cloud/model/User.java
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/api-commons/src/main/java/com/godx/cloud/constant/constant.java
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/api-commons/src/main/java/com/godx/cloud/model/CommonResult.java
+/Users/bytedance/IdeaProjects/springcloudTest/work-platform/api-commons/src/main/java/com/godx/cloud/model/LoginTicket.java
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/api-commons/src/main/java/com/godx/cloud/utils/RedisKeyUtil.java

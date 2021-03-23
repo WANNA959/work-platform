@@ -1,6 +1,18 @@
 package com.godx.cloud.constant;
 
 public interface constant {
+
+    /**
+     * 状态码
+     */
+    int STATUS_SUC=200;
+    int STATUS_BADREQUEST=400;
+
+    /**
+     * Common Message
+     */
+    String MESSAGE_OK="ok";
+
     /**
      * 邮件激活
      */
@@ -10,6 +22,16 @@ public interface constant {
     int ACTIVATION_REPEAT=1;
     //激活失败
     int ACTIVATION_FAILURE=2;
+
+    /**
+     * 修改密码
+     */
+    //修改成功
+    int MODIFY_SUCCESS=0;
+    //重复确认修改
+    int MODIFY_REPEAT=1;
+    //修改失败
+    int MODIFY_FAILURE=2;
 
     /**
      * 登录问题

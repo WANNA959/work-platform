@@ -18,9 +18,13 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import javax.annotation.Resource;
+
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Resource
+    private UserDetailsService userDetailsService;
     /**
      * 安全拦截机制
      */
@@ -29,13 +33,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 // 放行
-                .antMatchers("/**").permitAll()
+                .antMatchers("/oauth/**").permitAll()
 //                .antMatchers("/login").permitAll()
                 // 其他请求必须认证通过
                 .anyRequest().authenticated()
                 .and()
                 .formLogin() // 允许表单登录
-//                .successForwardUrl("/login-success") //自定义登录成功跳转页
+                .loginProcessingUrl("/oauth/login")
                 .and()
                 .csrf().disable();
 
@@ -73,7 +77,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService());
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return daoAuthenticationProvider;
@@ -82,15 +86,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * 用户详情服务
      */
-    @Bean
-    @Override
-    protected UserDetailsService userDetailsService() {
-        // 测试方便采用内存存取方式
-        InMemoryUserDetailsManager userDetailsService = new InMemoryUserDetailsManager();
-        userDetailsService.createUser(User.withUsername("user_1").password(passwordEncoder().encode("123456")).authorities("ROLE_USER").build());
-        userDetailsService.createUser(User.withUsername("admin").password(passwordEncoder().encode("password")).authorities("ROLE_USER").build());
-        return userDetailsService;
-    }
+//    @Bean
+//    @Override
+//    protected UserDetailsService userDetailsService() {
+//        // 测试方便采用内存存取方式
+//        InMemoryUserDetailsManager userDetailsService = new InMemoryUserDetailsManager();
+//
+//        userDetailsService.createUser(User.withUsername("user_1").password(passwordEncoder().encode("123456")).authorities("user").build());
+//        userDetailsService.createUser(User.withUsername("admin").password(passwordEncoder().encode("password")).authorities("admin").build());
+//        return userDetailsService;
+//    }
 
     /**
      * 设置授权码模式的授权码如何存取，暂时采用内存方式

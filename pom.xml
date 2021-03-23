@@ -11,7 +11,8 @@
     <module>api-commons</module>
     <module>gateway-9527</module>
     <module>auth-9528</module>
-      <module>api-test</module>
+    <module>api-test</module>
+    <module>auto-code</module>
   </modules>
 
   <name>Maven</name>

@@ -2,3 +2,4 @@ com/godx/cloud/constant/constant.class
 com/godx/cloud/utils/RedisKeyUtil.class
 com/godx/cloud/model/User.class
 com/godx/cloud/model/CommonResult.class
+com/godx/cloud/model/LoginTicket.class

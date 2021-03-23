@@ -14,7 +14,7 @@ public class KaptchaConfig {
     public Producer kaptcharProducer(){
 
         Properties pro=new Properties();
-        pro.setProperty("kaptcha.image.width","100");
+        pro.setProperty("kaptcha.image.width","120");
         pro.setProperty("kaptcha.image.height","40");
         pro.setProperty("kaptcha.textproducer.font.size","32");
         pro.setProperty("kaptcha.textproducer.font.color","black");

@@ -70,6 +70,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 // 令牌管理服务
                 .tokenServices(tokenServices())
                 .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
+//                .pathMapping("/oauth/token","/oauth/login");
     }
 
     /**
