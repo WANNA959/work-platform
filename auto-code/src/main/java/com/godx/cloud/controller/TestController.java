@@ -1,6 +1,6 @@
 package com.godx.cloud.controller;
 
-import com.godx.cloud.entity.Test;
+import com.godx.cloud.model.Test;
 import com.godx.cloud.service.TestService;
 import org.springframework.web.bind.annotation.*;
 

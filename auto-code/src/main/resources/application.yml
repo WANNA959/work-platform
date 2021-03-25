@@ -1,0 +1,53 @@
+# 服务端口号
+server:
+  port: 9001
+
+# 服务名
+spring:
+  application:
+    name: auth-code
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: org.gjt.mm.mysql.Driver
+    url: jdbc:mysql://rm-bp167k6429i8drmq71o.mysql.rds.aliyuncs.com:3306/work_platform?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: wanna959
+    password: Zhujianxing959
+  redis:
+    database: 0
+    host: 47.110.79.125
+    port: 6379
+    password: zhujianxing959
+  mail:
+    host: smtp.163.com
+    port: 465
+    username: wannazjx@163.com
+    password: LQXFREUCTGRHLVQP
+    protocol: smtps
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+  cloud:
+    # 注册进 nacos Server
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.godx.cloud.model  # 所有Entity 别名类所在包
+  configuration:
+    map-underscore-to-camel-case: true
+
+#OSS
+bucket:
+  #不同的服务器，地址不同
+  endpoint: oss-cn-hangzhou.aliyuncs.com
+  #去OSS控制台获取
+  accessKeyId: LTAI5tBNk9Wi4ViBaN6Djqyj
+  accessKeySecret: GN22VUFdaXw3qkp97BHJTi2BWcWsRa
+  #这个自己创建bucket时的命名，控制台创建也行，代码创建也行
+  bucketName: work-platform
+  #文件路径，我这里是blog
+  fileHost: test

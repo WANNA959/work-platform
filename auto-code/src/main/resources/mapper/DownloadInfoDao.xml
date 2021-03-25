@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.godx.cloud.dao.DownloadInfoDao">
+
+    <resultMap type="com.godx.cloud.entity.DownloadInfo" id="DownloadInfoMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="ossDetails" column="oss_details" jdbcType="VARCHAR"/>
+        <result property="fileType" column="file_type" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="DownloadInfoMap">
+        select id,
+               user_id,
+               oss_details,
+               file_type,
+               create_time,
+               update_time
+        from work_platform.download_info
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="DownloadInfoMap">
+        select id,
+               user_id,
+               oss_details,
+               file_type,
+               create_time,
+               update_time
+        from work_platform.download_info limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="DownloadInfoMap">
+        select
+        id, user_id, oss_details, file_type, create_time, update_time
+        from work_platform.download_info
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="ossDetails != null and ossDetails != ''">
+                and oss_details = #{ossDetails}
+            </if>
+            <if test="fileType != null and fileType != ''">
+                and file_type = #{fileType}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into work_platform.download_info(user_id, oss_details, file_type, create_time, update_time)
+        values (#{userId}, #{ossDetails}, #{fileType}, #{createTime}, #{updateTime})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into work_platform.download_info(user_id, oss_details, file_type, create_time, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.ossDetails}, #{entity.fileType}, #{entity.createTime}, #{entity.updateTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into work_platform.download_info(user_id, oss_details, file_type, create_time, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.ossDetails}, #{entity.fileType}, #{entity.createTime}, #{entity.updateTime})
+        </foreach>
+        on duplicate key update
+        user_id = values(user_id) , oss_details = values(oss_details) , file_type = values(file_type) , create_time =
+        values(create_time) , update_time = values(update_time)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update work_platform.download_info
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="ossDetails != null and ossDetails != ''">
+                oss_details = #{ossDetails},
+            </if>
+            <if test="fileType != null and fileType != ''">
+                file_type = #{fileType},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from work_platform.download_info
+        where id = #{id}
+    </delete>
+
+</mapper>
+

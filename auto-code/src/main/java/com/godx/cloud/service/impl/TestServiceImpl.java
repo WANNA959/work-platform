@@ -1,6 +1,6 @@
 package com.godx.cloud.service.impl;
 
-import com.godx.cloud.entity.Test;
+import com.godx.cloud.model.Test;
 import com.godx.cloud.dao.TestDao;
 import com.godx.cloud.service.TestService;
 import org.springframework.stereotype.Service;

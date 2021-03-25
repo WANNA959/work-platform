@@ -1,16 +1,16 @@
 package com.godx.cloud.service;
 
-import com.godx.cloud.model.Test;
+import com.godx.cloud.entity.DownloadInfo;
 
 import java.util.List;
 
 /**
- * (Test)表服务接口
+ * (DownloadInfo)表服务接口
  *
  * @author makejava
- * @since 2021-03-23 17:31:13
+ * @since 2021-03-25 19:37:50
  */
-public interface TestService {
+public interface DownloadInfoService {
 
     /**
      * 通过ID查询单条数据
@@ -18,7 +18,7 @@ public interface TestService {
      * @param id 主键
      * @return 实例对象
      */
-    Test queryById(Integer id);
+    DownloadInfo queryById(Integer id);
 
     /**
      * 查询多条数据
@@ -27,23 +27,23 @@ public interface TestService {
      * @param limit  查询条数
      * @return 对象列表
      */
-    List<Test> queryAllByLimit(int offset, int limit);
+    List<DownloadInfo> queryAllByLimit(int offset, int limit);
 
     /**
      * 新增数据
      *
-     * @param test 实例对象
+     * @param downloadInfo 实例对象
      * @return 实例对象
      */
-    Test insert(Test test);
+    DownloadInfo insert(DownloadInfo downloadInfo);
 
     /**
      * 修改数据
      *
-     * @param test 实例对象
+     * @param downloadInfo 实例对象
      * @return 实例对象
      */
-    Test update(Test test);
+    DownloadInfo update(DownloadInfo downloadInfo);
 
     /**
      * 通过主键删除数据

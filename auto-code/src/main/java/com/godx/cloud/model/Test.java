@@ -1,4 +1,4 @@
-package com.godx.cloud.entity;
+package com.godx.cloud.model;
 
 import java.util.Date;
 import java.io.Serializable;

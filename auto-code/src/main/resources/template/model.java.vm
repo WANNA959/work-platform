@@ -8,7 +8,7 @@ $!define
 #setPackageSuffix("entity")
 
 ##使用全局变量实现默认包导入
-$!autoImport
+#parse("Default/autoImport.vm")
 import java.io.Serializable;
 
 ##使用宏定义实现类注释信息
@@ -16,11 +16,11 @@ import java.io.Serializable;
 public class $!{tableInfo.name} implements Serializable {
     private static final long serialVersionUID = $!tool.serial();
 #foreach($column in $tableInfo.fullColumn)
-    #if(${column.comment})/**
+    #if(${column.comment}&&${column.comment}!='')/**
     * ${column.comment}
     */#end
 
-    private $!{tool.getClsNameByFullName($column.type)} $!{column.name};
+    private $!{name.getClsNameByFullName($column.type)} $!{column.name};
 #end
 
 #foreach($column in $tableInfo.fullColumn)
