@@ -3,7 +3,6 @@ package com.godx.cloud.service;
 import com.godx.cloud.model.DownloadInfo;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;

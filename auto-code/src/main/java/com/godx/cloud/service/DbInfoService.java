@@ -1,7 +1,6 @@
 package com.godx.cloud.service;
 
 import com.godx.cloud.model.DbInfo;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 import java.util.Map;

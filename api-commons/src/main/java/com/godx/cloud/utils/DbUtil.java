@@ -1,13 +1,18 @@
 package com.godx.cloud.utils;
 
+import com.godx.cloud.model.ColumnInfo;
+import com.godx.cloud.model.TableInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 public class DbUtil {
@@ -68,27 +73,64 @@ public class DbUtil {
     /**
      * 获得当前数据库生成数据库下所有的表名
      *
-     * @author one
      */
-    public List<String> getTableFromNowConnectDB(String user,String password,String host,String port,String database) {
-        Connection conn = null;
+    public static List<TableInfo> getAllTables(Connection conn,String database) {
         DatabaseMetaData dbmd = null;
-        List<String> list = null;
+        List<TableInfo> list = null;
         try {
-            conn = mySQLOpen(user,password,host,port,database);
             dbmd = (DatabaseMetaData) conn.getMetaData();            //conn.getCatalog():获得当前目录
-            ResultSet rs = dbmd.getTables(conn.getCatalog(), "%", "%", new String[]{"TABLE"});
+            String sql= String.format("select table_name,table_comment from information_schema.tables where table_schema='%s'", database);
+            PreparedStatement pst=conn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery(sql);
             if (rs != null) {
-                list = new ArrayList<String>();
+                list = new ArrayList<TableInfo>();
             }
             while (rs.next()) {                //System.out.println(rs.getString("TABLE_NAME"));
-                list.add(rs.getString("TABLE_NAME"));
+                TableInfo info=new TableInfo();
+                info.setName(rs.getString("table_name"));
+                info.setComment(rs.getString("table_comment"));
+                list.add(info);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        log.info(list.toString());
         return list;
+    }
+
+    /**
+     * 获得当前数据库 某表下所有的表名
+     *
+     */
+    public static List<ColumnInfo> getTableInfo(Connection conn,String database,String table) {
+        DatabaseMetaData dbmd = null;
+        List<ColumnInfo> columnList=null;
+        try {
+            dbmd = (DatabaseMetaData) conn.getMetaData();            //conn.getCatalog():获得当前目录
+            String sql= String.format("select * from information_schema.columns where table_schema='%s' and table_name='%s'", database,table);
+            PreparedStatement pst=conn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery(sql);
+            if (rs != null) {
+                columnList = new ArrayList<>();
+            } else{
+                return null;
+            }
+            while (rs.next()) {                //System.out.println(rs.getString("TABLE_NAME"));
+                ColumnInfo tmp=new ColumnInfo();
+                tmp.setName(rs.getString("COLUMN_NAME"));
+                tmp.setType(rs.getString("COLUMN_TYPE"));
+                tmp.setComment(rs.getString("COLUMN_COMMENT"));
+                tmp.setKey(rs.getString("COLUMN_KEY"));
+                Map<String,Object> map=new HashMap<>();
+                map.put("default",rs.getString("COLUMN_DEFAULT"));
+                map.put("extra",rs.getString("extra"));
+                tmp.setExt(map);
+                tmp.setNull(rs.getString("IS_NULLABLE").equals("NO")?false:true);
+                columnList.add(tmp);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return columnList;
     }
 
 //    @Test

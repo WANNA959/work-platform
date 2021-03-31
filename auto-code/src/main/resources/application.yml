@@ -6,6 +6,8 @@ server:
 spring:
   application:
     name: auto-code
+  profiles:
+    active: dev # 表示开发环境
   jackson:
     time-zone: GMT+8
   datasource:
@@ -49,14 +51,3 @@ feign:
         connectTimeout: 10000 #单位毫秒
         readTimeout: 10000 #单位毫秒
 
-#OSS
-bucket:
-  #不同的服务器，地址不同
-  endpoint: oss-cn-hangzhou.aliyuncs.com
-  #去OSS控制台获取
-  accessKeyId: LTAI5tBNk9Wi4ViBaN6Djqyj
-  accessKeySecret: GN22VUFdaXw3qkp97BHJTi2BWcWsRa
-  #这个自己创建bucket时的命名，控制台创建也行，代码创建也行
-  bucketName: work-platform
-  #文件路径，我这里是blog
-  fileHost: test

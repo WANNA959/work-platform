@@ -3,7 +3,7 @@
 #* @vtlvariable name="encode" type="java.lang.String" *#
 #* @vtlvariable name="modulePath" type="java.lang.String" *#
 #* @vtlvariable name="importList" type="java.util.List<java.lang.String>" *#
-#* @vtlvariable name="tool" type="com.godx.cloud.util.GlobalTool" *#
-#* @vtlvariable name="name" type="com.godx.cloud.util.NameUtil" *#
+#* @vtlvariable name="tool" type="com.godx.cloud.utils.GlobalTool" *#
+#* @vtlvariable name="name" type="com.godx.cloud.utils.NameUtil" *#
 #* @vtlvariable name="tableInfo" type="com.godx.cloud.model.TableInfo" *#
 #* @vtlvariable name="tableInfoList" type="java.util.List<com.godx.cloud.model.TableInfo>" *#

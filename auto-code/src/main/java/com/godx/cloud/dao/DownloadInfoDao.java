@@ -1,7 +1,6 @@
 package com.godx.cloud.dao;
 
 import com.godx.cloud.model.DownloadInfo;
-import com.sun.corba.se.spi.ior.ObjectKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

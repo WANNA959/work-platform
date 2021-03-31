@@ -3,15 +3,10 @@ package com.godx.cloud.controller;
 import com.godx.cloud.constant.constant;
 import com.godx.cloud.model.CommonResult;
 import com.godx.cloud.service.CodeService;
-import com.godx.cloud.util.OSSUtil;
-import com.godx.cloud.util.UserUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;

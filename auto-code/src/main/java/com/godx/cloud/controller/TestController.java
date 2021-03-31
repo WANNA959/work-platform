@@ -2,6 +2,8 @@ package com.godx.cloud.controller;
 
 import com.godx.cloud.model.Test;
 import com.godx.cloud.service.TestService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -13,7 +15,8 @@ import javax.annotation.Resource;
  * @since 2021-03-23 17:31:16
  */
 @RestController
-@RequestMapping("test")
+@RequestMapping("/test")
+@Slf4j
 public class TestController {
     /**
      * 服务对象
@@ -30,6 +33,13 @@ public class TestController {
     @GetMapping("selectOne")
     public Test selectOne(Integer id) {
         return this.testService.queryById(id);
+    }
+
+    @Value("${bucket.endpoint}")
+    private String test;
+    @GetMapping("/getInfo")
+    public void test(){
+        log.info(test);
     }
 
 }

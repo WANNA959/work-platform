@@ -13,6 +13,8 @@
     <module>auth-9528</module>
     <module>api-test</module>
     <module>auto-code</module>
+      <module>config-service-9000</module>
+      <module>auto-doc</module>
   </modules>
 
   <name>Maven</name>

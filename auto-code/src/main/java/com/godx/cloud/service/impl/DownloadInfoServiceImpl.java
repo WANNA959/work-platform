@@ -1,24 +1,20 @@
 package com.godx.cloud.service.impl;
 
-import com.godx.cloud.model.CommonResult;
-import com.godx.cloud.model.DownloadInfo;
 import com.godx.cloud.dao.DownloadInfoDao;
+import com.godx.cloud.model.DownloadInfo;
 import com.godx.cloud.model.User;
 import com.godx.cloud.service.DownloadInfoService;
 import com.godx.cloud.service.UserService;
-import com.godx.cloud.util.OSSUtil;
-import com.godx.cloud.util.TimeUtils;
-import com.godx.cloud.util.UserUtil;
+import com.godx.cloud.utils.OSSUtil;
+import com.godx.cloud.utils.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 

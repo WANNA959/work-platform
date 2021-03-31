@@ -2,11 +2,11 @@ package com.godx.cloud.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.godx.cloud.constant.constant;
-import com.godx.cloud.model.DbInfo;
 import com.godx.cloud.model.CommonResult;
+import com.godx.cloud.model.DbInfo;
 import com.godx.cloud.model.User;
 import com.godx.cloud.service.DbInfoService;
-import com.godx.cloud.util.DbUtil;
+import com.godx.cloud.utils.DbUtil;
 import com.godx.cloud.utils.RedisKeyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.Strings;
