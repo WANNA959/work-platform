@@ -12,9 +12,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -71,7 +69,7 @@ public class OSSUtil {
      * @param localFilePath 本地文件路径 + 文件名
      * @return
      */
-    public static String uploadWithLocalFile(String localFilePath){
+    public static String uploadWithLocalFile(String localFilePath,String ossFilePath){
         File file=new File(localFilePath);
         if (!file.getParentFile().exists()) {
             log.warn("不存在本地文件");
@@ -79,16 +77,11 @@ public class OSSUtil {
         }
         log.info("=========>OSS文件上传开始："+localFilePath);
 
-        // todo 定义文件上传路径
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String dateStr = format.format(new Date());
-
         if(null == file){
             return null;
         }
 
         OSSClient ossClient = new OSSClient(endpoint,accessKeyId,accessKeySecret);
-        String fileUrl=null;
         try {
             //容器不存在，就创建
             if(! ossClient.doesBucketExist(bucketName)){
@@ -97,15 +90,13 @@ public class OSSUtil {
                 createBucketRequest.setCannedACL(CannedAccessControlList.Private);
                 ossClient.createBucket(createBucketRequest);
             }
-            //创建文件路径
-            fileUrl = CodeMybatisHostPath+"/"+file.getName();
             //上传文件
-            PutObjectResult result = ossClient.putObject(new PutObjectRequest(bucketName, fileUrl, file));
+            PutObjectResult result = ossClient.putObject(new PutObjectRequest(bucketName, ossFilePath, file));
             //设置权限 这里是公开读
             ossClient.setBucketAcl(bucketName,CannedAccessControlList.Private);
             if(null != result){
-                log.info("==========>OSS文件上传成功,OSS地址："+fileUrl);
-                return fileUrl;
+                log.info("==========>OSS文件上传成功,OSS地址："+ossFilePath);
+                return ossFilePath;
             }
         }catch (OSSException oe){
             log.error(oe.getMessage());
@@ -115,7 +106,7 @@ public class OSSUtil {
             //关闭
             ossClient.shutdown();
         }
-        return fileUrl;
+        return ossFilePath;
     }
 
     /** todo
@@ -181,16 +172,13 @@ public class OSSUtil {
     /**
      * 从OSS服务器下载到本地
      * @param ossFilePath  OSS文件路径 + 文件名
-     * @param localFilePath 本地存储路径
      */
-    public static void download(String ossFilePath, String localFilePath) {
-        File file = new File(localFilePath);
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
-        }
+    public static BufferedInputStream downloadFromOss(String ossFilePath) throws IOException {
         OSS ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-        ossClient.getObject(new GetObjectRequest(bucketName, ossFilePath), file);
-        ossClient.shutdown();
+        OSSObject ossObject = ossClient.getObject(bucketName, ossFilePath);
+        BufferedInputStream reader = new BufferedInputStream(ossObject.getObjectContent());
+
+        return reader;
     }
 
 

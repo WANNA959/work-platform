@@ -6,5 +6,6 @@
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/auth-9528/src/main/java/com/godx/cloud/config/JwtConfig.java
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/auth-9528/src/main/java/com/godx/cloud/config/AuthorizationServerConfig.java
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/auth-9528/src/main/java/com/godx/cloud/config/KaptchaConfig.java
+/Users/bytedance/IdeaProjects/springcloudTest/work-platform/auth-9528/src/main/java/com/godx/cloud/config/RedisSessionConfig.java
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/auth-9528/src/main/java/com/godx/cloud/controller/UserController.java
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/auth-9528/src/main/java/com/godx/cloud/dao/UserDao.java

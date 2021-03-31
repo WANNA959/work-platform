@@ -22,7 +22,9 @@ import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.security.Principal;
 import java.util.HashMap;
@@ -57,23 +59,31 @@ public class UserController implements constant{
     @Resource
     private PasswordEncoder passwordEncoder;
 
-    @GetMapping("/oauth/user/{id}")
-    public CommonResult GetUser(@PathVariable("id") int id){
-        User user = userService.getUserById(id);
-        Map<String,Object> map=new HashMap<>();
-        map.put("user",user);
-        return new CommonResult(200,"ok",map);
+    @GetMapping("/oauth/user")
+    public CommonResult GetUser(@RequestHeader("Authorization")String token){
+        String tokenKey = RedisKeyUtil.getTokenKey(token.substring(7));
+        User user =(User) redisTemplate.opsForValue().get(tokenKey);
+        log.info("token: "+tokenKey);
+        if(user!=null){
+            log.info(user.toString());
+            Map<String,Object> map=new HashMap<>();
+            map.put("user",user);
+            return new CommonResult(200,"ok",map);
+        } else{
+            log.info("no user in redis");
+            return new CommonResult(STATUS_SUC,"no user");
+        }
+
     }
 
 
-    @GetMapping("/oauth/token")
-    public CommonResult getAccessToken(Principal principal, @RequestParam Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
-        return custom((OAuth2AccessToken) tokenEndpoint.getAccessToken(principal, parameters),"",null);
-    }
+//    @GetMapping("/oauth/token")
+//    public CommonResult getAccessToken(Principal principal, @RequestParam Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
+//        return custom((OAuth2AccessToken) tokenEndpoint.getAccessToken(principal, parameters),"",null);
+//    }
 
     @PostMapping("/oauth/token")
-    public CommonResult postAccessToken(Principal principal, @RequestParam Map<String, String> parameters,@CookieValue("kaptchaOwner") String kaptchaOwner) throws HttpRequestMethodNotSupportedException {
-        log.info("info");
+    public CommonResult postAccessToken(Principal principal, @RequestParam Map<String, String> parameters, @CookieValue("kaptchaOwner") String kaptchaOwner) throws HttpRequestMethodNotSupportedException {
         log.info(parameters.toString());
         String username=parameters.get("username");
         String password=parameters.get("password");
@@ -115,6 +125,10 @@ public class UserController implements constant{
         }
         User user = userService.getUserByUsername(username);
         data.put("user",user);
+        String tokenKey = RedisKeyUtil.getTokenKey(token.getValue());
+        // todo 统一登录时间
+        log.info("tokenkey:"+tokenKey);
+        redisTemplate.opsForValue().set(tokenKey, user, 3600, TimeUnit.SECONDS);
         return new CommonResult(200,msg,data);
     }
 

@@ -32,7 +32,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 				// 配置hello打头的路由需要安全认证
-				.antMatchers("/api/hello/**").authenticated()
+				// todo
+				.antMatchers("/api/code/**").authenticated()
 				.and().csrf().disable();
 	}
 
@@ -61,7 +62,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	@Primary
 	public ResourceServerTokenServices tokenServices() {
         RemoteTokenServices remoteTokenServices = new RemoteTokenServices();
-        remoteTokenServices.setCheckTokenEndpointUrl("http://localhost:9528/oauth/check_token");
+        remoteTokenServices.setCheckTokenEndpointUrl("http://localhost:8443/oauth/check_token");
         remoteTokenServices.setClientId("client_1");
         remoteTokenServices.setClientSecret("123456");
         return remoteTokenServices;

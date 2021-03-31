@@ -35,6 +35,14 @@
             <artifactId>hutool-all</artifactId>
             <version>5.5.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
         <!--
              关于这个hutool 是个功能强大的工具包，官网：https://hutool.cn/
         -->

@@ -2,13 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.godx.cloud.dao.DownloadInfoDao">
 
-    <resultMap type="com.godx.cloud.entity.DownloadInfo" id="DownloadInfoMap">
+    <resultMap type="com.godx.cloud.model.DownloadInfo" id="DownloadInfoMap">
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="userId" column="user_id" jdbcType="INTEGER"/>
         <result property="ossDetails" column="oss_details" jdbcType="VARCHAR"/>
         <result property="fileType" column="file_type" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="dbName" column="db_name" jdbcType="VARCHAR"/>
+        <result property="tables" column="tables" jdbcType="VARCHAR"/>
+        <result property="host" column="host" jdbcType="VARCHAR"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--查询单个-->
@@ -18,26 +23,78 @@
                oss_details,
                file_type,
                create_time,
-               update_time
+               update_time,
+               db_name,
+               tables,
+               host,
+               username,
+               password
         from work_platform.download_info
         where id = #{id}
     </select>
 
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="DownloadInfoMap">
-        select id,
-               user_id,
-               oss_details,
-               file_type,
-               create_time,
-               update_time
-        from work_platform.download_info limit #{offset}, #{limit}
+        select *
+        from work_platform.download_info
+        <where>
+            <if test="map.host != null and map.host != ''">
+                and host like '%${map.host}%'
+            </if>
+            <if test="map.username != null and map.username != ''">
+                and username like '%${map.username}%'
+            </if>
+            <if test="map.database != null and map.database != ''">
+                and db_name like '%${map.database}%'
+            </if>
+            <if test="map.table != null and map.table != ''">
+                and tables like '%${map.table}%'
+            </if>
+            <if test="map.type != null and map.type != ''">
+                and file_type = #{map.type}
+            </if>
+            <if test="map.beginTime != null and map.beginTime != ''">
+                and create_time >= #{map.beginTime}
+            </if>
+            <if test="map.endTime != null and map.endTime != ''">
+                and create_time &lt;= #{map.endTime}
+            </if>
+        </where>
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="queryCount" resultType="int">
+        select count(*)
+        from work_platform.download_info
+        <where>
+            <if test="map.host != null and map.host != ''">
+                and host like '%${map.host}%'
+            </if>
+            <if test="map.username != null and map.username != ''">
+                and username like '%${map.username}%'
+            </if>
+            <if test="map.database != null and map.database != ''">
+                and db_name like '%${map.database}%'
+            </if>
+            <if test="map.table != null and map.table != ''">
+                and tables like '%${map.table}%'
+            </if>
+            <if test="map.type != null and map.type != ''">
+                and file_type = #{map.type}
+            </if>
+            <if test="map.beginTime != null and map.beginTime != ''">
+                and create_time >= #{map.beginTime}
+            </if>
+            <if test="map.endTime != null and map.endTime != ''">
+                and create_time &lt;= #{map.endTime}
+            </if>
+        </where>
     </select>
 
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="DownloadInfoMap">
         select
-        id, user_id, oss_details, file_type, create_time, update_time
+        id, user_id, oss_details, file_type, create_time, update_time, db_name, tables, host, username, password
         from work_platform.download_info
         <where>
             <if test="id != null">
@@ -58,32 +115,54 @@
             <if test="updateTime != null">
                 and update_time = #{updateTime}
             </if>
+            <if test="dbName != null and dbName != ''">
+                and db_name = #{dbName}
+            </if>
+            <if test="tables != null and tables != ''">
+                and tables = #{tables}
+            </if>
+            <if test="host != null and host != ''">
+                and host = #{host}
+            </if>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="password != null and password != ''">
+                and password = #{password}
+            </if>
         </where>
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into work_platform.download_info(user_id, oss_details, file_type, create_time, update_time)
-        values (#{userId}, #{ossDetails}, #{fileType}, #{createTime}, #{updateTime})
+        insert into work_platform.download_info(user_id, oss_details, file_type, create_time, update_time, db_name,
+                                                tables, host, username, password)
+        values (#{userId}, #{ossDetails}, #{fileType}, #{createTime}, #{updateTime}, #{dbName}, #{tables}, #{host},
+                #{username}, #{password})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into work_platform.download_info(user_id, oss_details, file_type, create_time, update_time)
+        insert into work_platform.download_info(user_id, oss_details, file_type, create_time, update_time, db_name,
+        tables, host, username, password)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.userId}, #{entity.ossDetails}, #{entity.fileType}, #{entity.createTime}, #{entity.updateTime})
+            (#{entity.userId}, #{entity.ossDetails}, #{entity.fileType}, #{entity.createTime}, #{entity.updateTime},
+            #{entity.dbName}, #{entity.tables}, #{entity.host}, #{entity.username}, #{entity.password})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into work_platform.download_info(user_id, oss_details, file_type, create_time, update_time)
+        insert into work_platform.download_info(user_id, oss_details, file_type, create_time, update_time, db_name,
+        tables, host, username, password)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.userId}, #{entity.ossDetails}, #{entity.fileType}, #{entity.createTime}, #{entity.updateTime})
+            (#{entity.userId}, #{entity.ossDetails}, #{entity.fileType}, #{entity.createTime}, #{entity.updateTime},
+            #{entity.dbName}, #{entity.tables}, #{entity.host}, #{entity.username}, #{entity.password})
         </foreach>
         on duplicate key update
         user_id = values(user_id) , oss_details = values(oss_details) , file_type = values(file_type) , create_time =
-        values(create_time) , update_time = values(update_time)
+        values(create_time) , update_time = values(update_time) , db_name = values(db_name) , tables = values(tables) ,
+        host = values(host) , username = values(username) , password = values(password)
     </insert>
 
     <!--通过主键修改数据-->
@@ -104,6 +183,21 @@
             </if>
             <if test="updateTime != null">
                 update_time = #{updateTime},
+            </if>
+            <if test="dbName != null and dbName != ''">
+                db_name = #{dbName},
+            </if>
+            <if test="tables != null and tables != ''">
+                tables = #{tables},
+            </if>
+            <if test="host != null and host != ''">
+                host = #{host},
+            </if>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
             </if>
         </set>
         where id = #{id}

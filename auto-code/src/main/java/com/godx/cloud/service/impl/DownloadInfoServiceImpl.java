@@ -1,12 +1,26 @@
 package com.godx.cloud.service.impl;
 
-import com.godx.cloud.entity.DownloadInfo;
+import com.godx.cloud.model.CommonResult;
+import com.godx.cloud.model.DownloadInfo;
 import com.godx.cloud.dao.DownloadInfoDao;
+import com.godx.cloud.model.User;
 import com.godx.cloud.service.DownloadInfoService;
+import com.godx.cloud.service.UserService;
+import com.godx.cloud.util.OSSUtil;
+import com.godx.cloud.util.TimeUtils;
+import com.godx.cloud.util.UserUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * (DownloadInfo)表服务实现类
@@ -15,9 +29,17 @@ import java.util.List;
  * @since 2021-03-25 19:37:51
  */
 @Service("downloadInfoService")
+@Slf4j
 public class DownloadInfoServiceImpl implements DownloadInfoService {
     @Resource
     private DownloadInfoDao downloadInfoDao;
+
+    @Resource
+    private UserService userService;
+
+    @Resource
+    private RedisTemplate redisTemplate;
+
 
     /**
      * 通过ID查询单条数据
@@ -38,8 +60,14 @@ public class DownloadInfoServiceImpl implements DownloadInfoService {
      * @return 对象列表
      */
     @Override
-    public List<DownloadInfo> queryAllByLimit(int offset, int limit) {
-        return this.downloadInfoDao.queryAllByLimit(offset, limit);
+    public List<DownloadInfo> queryAllByLimit(int offset, int limit, Map<String,Object> map) throws ParseException {
+        List<DownloadInfo> downloadInfos = this.downloadInfoDao.queryAllByLimit(offset, limit, map);
+        return downloadInfos;
+    }
+
+    @Override
+    public int queryCount(Map<String,Object> map){
+        return this.downloadInfoDao.queryCount(map);
     }
 
     /**
@@ -73,7 +101,29 @@ public class DownloadInfoServiceImpl implements DownloadInfoService {
      * @return 是否成功
      */
     @Override
-    public boolean deleteById(Integer id) {
-        return this.downloadInfoDao.deleteById(id) > 0;
+    public boolean deleteById(Integer id,Integer userId) {
+        DownloadInfo info = this.downloadInfoDao.queryById(id);
+
+        if(info!=null && info.getUserId()==userId){
+            return this.downloadInfoDao.deleteById(id) > 0;
+        } else{
+            return false;
+        }
+    }
+
+    @Override
+    public BufferedInputStream downloadItem(Integer id, String token) throws IOException {
+        User user = UserUtil.getUserInfo(redisTemplate,token);
+        DownloadInfo info = downloadInfoDao.queryById(id);
+        if (info == null) {
+            return null;
+        }
+        //鉴权不匹配
+        if(info.getUserId()!=user.getId()){
+            return null;
+        }
+        String fileUrl = info.getOssDetails();
+        BufferedInputStream reader = OSSUtil.downloadFromOss(fileUrl);
+        return reader;
     }
 }

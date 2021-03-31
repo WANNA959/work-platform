@@ -11,6 +11,7 @@ public class RedisKeyUtil {
     private static final String PREFIX_KAPTCHAR="kaptcha";
     private static final String PREFIX_TICKET="ticket";
     private static final String PREFIX_USER="user";
+    private static final String PREFIX_TOKEN="token";
 
     //某个实体的赞
     public static String getPrefixEntityLikeKey(int entityType,int entityId){
@@ -45,5 +46,9 @@ public class RedisKeyUtil {
     //用户
     public static String getUserKey(int userId){
         return PREFIX_USER+SPLIT+userId;
+    }
+
+    public static String getTokenKey(String token){
+        return PREFIX_TOKEN+SPLIT+token;
     }
 }

@@ -1,5 +1,11 @@
 package com.godx.cloud.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -9,6 +15,9 @@ import java.util.Date;
  * @author makejava
  * @since 2021-03-25 19:37:39
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class DownloadInfo implements Serializable {
     private static final long serialVersionUID = -38620391113208322L;
     /**
@@ -30,59 +39,18 @@ public class DownloadInfo implements Serializable {
     /**
      * 创建时间
      */
+    private String host;
+    private String username;
+    private String password;
+    private String dbName;
+    private String tables;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date createTime;
     /**
      * 更新时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date updateTime;
 
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public String getOssDetails() {
-        return ossDetails;
-    }
-
-    public void setOssDetails(String ossDetails) {
-        this.ossDetails = ossDetails;
-    }
-
-    public String getFileType() {
-        return fileType;
-    }
-
-    public void setFileType(String fileType) {
-        this.fileType = fileType;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 
 }

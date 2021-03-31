@@ -1,9 +1,12 @@
 package com.godx.cloud.dao;
 
-import com.godx.cloud.entity.DownloadInfo;
+import com.godx.cloud.model.DownloadInfo;
+import com.sun.corba.se.spi.ior.ObjectKey;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * (DownloadInfo)表数据库访问层
@@ -11,6 +14,7 @@ import java.util.List;
  * @author makejava
  * @since 2021-03-25 19:37:50
  */
+@Mapper
 public interface DownloadInfoDao {
 
     /**
@@ -28,9 +32,9 @@ public interface DownloadInfoDao {
      * @param limit  查询条数
      * @return 对象列表
      */
-    List<DownloadInfo> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+    List<DownloadInfo> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit,@Param("map") Map<String, Object> map);
 
-
+    int queryCount(@Param("map") Map<String, Object> map);
     /**
      * 通过实体作为筛选条件查询
      *
