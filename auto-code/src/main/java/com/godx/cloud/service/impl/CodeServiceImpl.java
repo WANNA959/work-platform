@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,8 @@ public class CodeServiceImpl implements CodeService {
     @Resource
     private RedisTemplate redisTemplate;
 
-    private static final String CodeMybatisHostPath="generate/code/mybatis";
+    @Value("${bucket.filePath.CodeMybatisHostPath}")
+    private String CodeMybatisHostPath;
 
     @Override
     public void getMybatisCode(String username, String password,String host,String port, String database, List<String> tables,String token) throws IOException, SQLException {

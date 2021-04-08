@@ -1,25 +1,25 @@
 package com.godx.cloud.utils;
 
-import com.aliyun.oss.OSS;
-import com.aliyun.oss.model.*;
-import lombok.extern.slf4j.Slf4j;
-
 import com.aliyun.oss.ClientException;
+import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSException;
+import com.aliyun.oss.model.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 @Slf4j
 @Component
 @RefreshScope
 public class OSSUtil {
 
-
-    private static final String CodeMybatisHostPath="generate/code/mybatis";
 
     @Value("${bucket.endpoint}")
     private static String endpoint;

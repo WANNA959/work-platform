@@ -1,11 +1,9 @@
-/Users/bytedance/IdeaProjects/springcloudTest/work-platform/auto-code/src/main/java/com/godx/cloud/utils/UserUtil.java
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/auto-code/src/main/java/com/godx/cloud/service/impl/DownloadInfoServiceImpl.java
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/auto-code/src/main/java/com/godx/cloud/config/StructuredGlobbingResourceLoader.java
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/auto-code/src/main/java/com/godx/cloud/utils/VelocityUtil.java
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/auto-code/src/main/java/com/godx/cloud/service/UserService.java
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/auto-code/src/main/java/com/godx/cloud/controller/CodeController.java
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/auto-code/src/main/java/com/godx/cloud/config/ResourceServerConfig.java
-/Users/bytedance/IdeaProjects/springcloudTest/work-platform/auto-code/src/main/java/com/godx/cloud/utils/FileUtil.java
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/auto-code/src/main/java/com/godx/cloud/utils/NameUtil.java
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/auto-code/src/main/java/com/godx/cloud/service/impl/TestServiceImpl.java
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/auto-code/src/main/java/com/godx/cloud/service/TestService.java
@@ -18,8 +16,6 @@
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/auto-code/src/main/java/com/godx/cloud/service/DownloadInfoService.java
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/auto-code/src/main/java/com/godx/cloud/utils/TimeUtils.java
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/auto-code/src/main/java/com/godx/cloud/controller/TestController.java
-/Users/bytedance/IdeaProjects/springcloudTest/work-platform/auto-code/src/main/java/com/godx/cloud/utils/DbUtil.java
-/Users/bytedance/IdeaProjects/springcloudTest/work-platform/auto-code/src/main/java/com/godx/cloud/utils/FormatUtil.java
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/auto-code/src/main/java/com/godx/cloud/dao/DownloadInfoDao.java
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/auto-code/src/main/java/com/godx/cloud/controller/DownloadInfoController.java
 /Users/bytedance/IdeaProjects/springcloudTest/work-platform/auto-code/src/main/java/com/godx/cloud/CodeMain9001.java

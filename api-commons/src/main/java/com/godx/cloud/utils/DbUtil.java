@@ -75,10 +75,8 @@ public class DbUtil {
      *
      */
     public static List<TableInfo> getAllTables(Connection conn,String database) {
-        DatabaseMetaData dbmd = null;
         List<TableInfo> list = null;
         try {
-            dbmd = (DatabaseMetaData) conn.getMetaData();            //conn.getCatalog():获得当前目录
             String sql= String.format("select table_name,table_comment from information_schema.tables where table_schema='%s'", database);
             PreparedStatement pst=conn.prepareStatement(sql);
             ResultSet rs = pst.executeQuery(sql);

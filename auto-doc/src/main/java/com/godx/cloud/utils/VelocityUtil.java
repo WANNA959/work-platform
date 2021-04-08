@@ -147,7 +147,7 @@ public class VelocityUtil {
         log.info(type2fileName(type,name));
         String parentDirectory = type2ParentDirectory(type);
 //        File saveFile = new File(localPath+"/"+parentDirectory+type2fileName(type,name));
-        File saveFile = new File(localPath+"/dbInfo.docx");
+        File saveFile = new File(localPath+"/template.docx");
 
         //获得它的父类文件，如果不存在，就创建
         if (!saveFile.getParentFile().exists()) {
@@ -156,7 +156,7 @@ public class VelocityUtil {
         //创建文件输出流
         FileOutputStream outStream = new FileOutputStream(saveFile);
         //因为模板整合的时候，需要提供一个Writer，所以创建一个Writer
-        OutputStreamWriter writer = new OutputStreamWriter(outStream);
+        OutputStreamWriter writer = new OutputStreamWriter(outStream,"utf-8");
         //创建一个缓冲流
         BufferedWriter bufferWriter = new BufferedWriter(writer);
 

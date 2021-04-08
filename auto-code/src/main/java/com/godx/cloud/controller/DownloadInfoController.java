@@ -6,6 +6,7 @@ import com.godx.cloud.model.DownloadInfo;
 import com.godx.cloud.model.User;
 import com.godx.cloud.service.DownloadInfoService;
 import com.godx.cloud.utils.RedisKeyUtil;
+import com.godx.cloud.utils.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -106,11 +107,14 @@ public class DownloadInfoController implements constant {
 //        if(bufferedReader==null){
 //            return new CommonResult(STATUS_BADREQUEST,"fail to download");
 //        }
+        DownloadInfo downloadInfo = downloadInfoService.queryById(id);
+        String filePath = downloadInfo.getOssDetails();
+        int pos = filePath.lastIndexOf('/');
         ServletOutputStream out = null;
         //自动判断下载文件类型
         response.setContentType("application/form-data;charset=UTF-8");
         //设置文件头：最后一个参数是设置下载文件名
-        response.setHeader("Content-Disposition", "attachment;fileName="+"test.zip");
+        response.setHeader("Content-Disposition", "attachment;fileName="+filePath.substring(pos+1));
         out = response.getOutputStream();
         int len = 0;
         byte[] buffer = new byte[1024 * 10];
@@ -150,6 +154,16 @@ public class DownloadInfoController implements constant {
             return new CommonResult(STATUS_SUC,MESSAGE_OK);
         }
         return new CommonResult(STATUS_BADREQUEST,"fail to delete");
+    }
+
+    @PostMapping("/insert")
+    public CommonResult insertItem(DownloadInfo info){
+        log.info(info.toString());
+        DownloadInfo item = downloadInfoService.insert(info);
+        if (item!=null){
+            return new CommonResult(STATUS_SUC,MESSAGE_OK,item);
+        }
+        return new CommonResult(STATUS_BADREQUEST,"insert fail");
     }
 
 }
