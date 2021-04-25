@@ -38,7 +38,7 @@ public class DbUtil {
     }
 
     public static Connection mySQLOpen(String user,String password,String host,String port,String database) {
-        String url="jdbc:mysql://"+host+":"+port+"/"+database+"?useUnicode=true&characterEncoding=utf-8&useSSL=false";    // MySQL配置时的用户名
+        String url="jdbc:mysql://"+host+":"+port+"/"+database+"?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true";    // MySQL配置时的用户名
         Connection con = null;
         try {
             con = DriverManager.getConnection(url, user, password);

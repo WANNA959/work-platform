@@ -1,6 +1,6 @@
 # 服务端口号
 server:
-  port: 8444
+  port: 8445
 
 # 服务名
 spring:
@@ -32,7 +32,7 @@ spring:
     # 注册进 nacos Server
     nacos:
       discovery:
-        server-addr: localhost:8848
+        server-addr: godx.cloud:8848
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

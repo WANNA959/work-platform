@@ -8,7 +8,7 @@ spring:
     # 注册进 nacos Server
     nacos:
       discovery:
-        server-addr: localhost:8848
+        server-addr: godx.cloud:8848
     ## GateWay配置
     gateway:
       discovery:
@@ -36,3 +36,8 @@ spring:
           uri: lb://auto-doc
           predicates:
             - Path=/api/doc/**
+
+        - id: db-service
+          uri: lb://db-service
+          predicates:
+            - Path=/api/db/**

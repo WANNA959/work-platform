@@ -32,11 +32,11 @@ spring:
         smtp:
           ssl:
             enable: true
-  cloud:
-    # 注册进 nacos Server
-    nacos:
-      discovery:
-        server-addr: localhost:8848
+#  cloud:
+#    # 注册进 nacos Server
+#    nacos:
+#      discovery:
+#        server-addr: localhost:8848
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

@@ -45,7 +45,7 @@ public class DbInfoController implements constant {
      * @return 单条数据
      */
     @GetMapping("/selectOnex")
-    public DbInfo selectOne(Integer id) {
+    public DbInfo selectOne(@RequestParam("id") Integer id) {
         return this.dbInfoService.queryById(id);
     }
 
