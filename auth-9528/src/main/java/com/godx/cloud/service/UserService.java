@@ -107,6 +107,7 @@ public class UserService implements constant, UserDetailsService {
         user.setType(0);
         user.setStatus(0);
         user.setActivationCode(IdUtil.simpleUUID());
+        user.setResetCode(IdUtil.simpleUUID());
         user.setHeaderUrl(String.format("http://images.nowcoder.com/head/%dt.png", new Random().nextInt(1000)));
         userDao.insertUser(user);
 
@@ -124,13 +125,13 @@ public class UserService implements constant, UserDetailsService {
                 "\t\t\t<b>%s</b>, 您好!\n" +
                 "\t\t</p>\n" +
                 "\t\t<p>\n" +
-                "\t\t\t您正在注册银杏社区BBS账号, 这是一封激活邮件, 请点击\n" +
+                "\t\t\t您正在注册work_platform敏捷开发平台账号, 这是一封激活邮件, 请点击\n" +
                 "\t\t\t<a href=\"%s\">此链接</a>,\n" +
-                "\t\t\t激活您的社区账号!\n" +
+                "\t\t\t激活您的账号!\n" +
                 "\t\t</p>\n" +
                 "\t</div>",user.getEmail(),url);
         log.info(content2);
-        mailClient.sendMail(user.getEmail(), "激活账号", content2);
+        mailClient.sendMail(user.getEmail(), "work_platform平台激活账号", content2);
 
         result.setCode(200);
         result.setMessage("ok");
@@ -347,7 +348,7 @@ public class UserService implements constant, UserDetailsService {
 //        loginTicketMapper.insertLoginTicket(loginTicket);
 
         String redisKey = RedisKeyUtil.getTicketKey(loginTicket.getTicket());
-        redisTemplate.opsForValue().set(redisKey, loginTicket);
+//        redisTemplate.opsForValue().set(redisKey, loginTicket);
 
         map.put("ticket", loginTicket.getTicket());
         return map;
@@ -384,5 +385,4 @@ public class UserService implements constant, UserDetailsService {
         return new org.springframework.security.core.userdetails.User(username,password,authorities);
     }
 
-    //todo 基于角色的权限控制
 }

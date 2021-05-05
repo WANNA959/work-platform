@@ -90,6 +90,8 @@ $!callback.setSavePath($tool.append($modulePath, "/src/main/resources/mapper"))
         where $!pk.rawName = #{$!pk.name}
     </update>
 
+#mapper()
+
     <!--通过主键删除-->
     <delete id="deleteById">
         delete from $!{tableInfo.DBName}.$!{tableInfo.rawName} where $!pk.rawName = #{$!pk.name}

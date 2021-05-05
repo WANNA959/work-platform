@@ -37,10 +37,6 @@ public class ColumnInfo {
      * 短类型 String
      */
     private String shortType;
-    /**
-     * 标记是否为自定义附加列
-     */
-    private boolean custom;
     private boolean isNull;
     private String key;
     /**

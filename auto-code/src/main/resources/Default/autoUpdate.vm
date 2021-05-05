@@ -1,0 +1,63 @@
+#macro(serviceUpdate)
+#foreach($uniKeyColumn in $uniKeyColumns)
+    /**
+    * 根据唯一索引($!{uniKeyColumn.name})修改数据
+    *
+    * @param $!{uniKeyColumn.name} 唯一索引
+    * @param $!tool.firstLowerCase($!{tableInfo.name}) 实例对象
+    * @return 实例对象
+    */
+    $!{tableInfo.name} updateBy$!tool.firstUpperCase($!{uniKeyColumn.name})($!{uniKeyColumn.shortType} $!{uniKeyColumn.name},$!{tableInfo.name} $!tool.firstLowerCase($!{tableInfo.name}));
+
+#end
+#end
+
+#macro(serviceImplUpdate)
+#foreach($uniKeyColumn in $uniKeyColumns)
+    /**
+    * 根据唯一索引($!{uniKeyColumn.name})修改数据
+    *
+    * @param $!{uniKeyColumn.name} 唯一索引
+    * @param $!tool.firstLowerCase($!{tableInfo.name}) 实例对象
+    * @return 实例对象
+    */
+    @Override
+    public $!{tableInfo.name} updateBy$!tool.firstUpperCase($!{uniKeyColumn.name})($!{uniKeyColumn.shortType} $!{uniKeyColumn.name},$!{tableInfo.name} $!tool.firstLowerCase($!{tableInfo.name})) {
+        this.$!{tool.firstLowerCase($!{tableInfo.name})}Dao.updateBy$!tool.firstUpperCase($!{uniKeyColumn.name})($!{uniKeyColumn.name},$!tool.firstLowerCase($!{tableInfo.name}));
+        return this.queryById($!{tool.firstLowerCase($!{tableInfo.name})}.get$!tool.firstUpperCase($pk.name)());
+    }
+
+#end
+#end
+
+#macro(daoUpdate)
+#foreach($uniKeyColumn in $uniKeyColumns)
+    /**
+    * 根据唯一索引($!{uniKeyColumn.name})修改数据
+    *
+    * @param $!{uniKeyColumn.name} 唯一索引
+    * @param $!tool.firstLowerCase($!{tableInfo.name}) 实例对象
+    * @return 影响行数
+    */
+    int updateBy$!tool.firstUpperCase($!{uniKeyColumn.name})($!{uniKeyColumn.shortType} $!{uniKeyColumn.name},$!{tableInfo.name} $!tool.firstLowerCase($!{tableInfo.name}));
+
+#end
+#end
+
+#macro(mapperUpdate)
+#foreach($uniKeyColumn in $uniKeyColumns)
+    <!--通过唯一索引($!{uniKeyColumn.rawName}))修改数据-->
+    <update id="updateBy$!tool.firstUpperCase($!{uniKeyColumn.name})">
+        update $!{tableInfo.DBName}.$!{tableInfo.rawName}
+        <set>
+#foreach($column in $tableInfo.otherColumn)
+            <if test="$!column.name != null#if($column.type.equals("String")) and $!column.name != ''#end">
+                $!column.rawName = #{$!column.name},
+            </if>
+#end
+        </set>
+        where $!uniKeyColumn.rawName = #{$!uniKeyColumn.name}
+    </update>
+
+#end
+#end

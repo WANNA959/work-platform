@@ -41,7 +41,6 @@ public class PoiTlUtil {
     }
 
     public static XWPFTemplate loadContext2(Connection conn, String database) throws SQLException, IOException {
-        //2 创建上下文对象 将数据对象添加到此上下文中
         Map<String,Object> map=new HashMap<>();
 
         HackLoopTableRenderPolicy policy = new HackLoopTableRenderPolicy();
@@ -60,6 +59,8 @@ public class PoiTlUtil {
         log.info(tableList.toString());
         for (TableInfo table:tableList){
             List<ColumnInfo> columns = DbUtil.getTableInfo(conn,database, table.getName());
+            String createSql = DbUtil.getCreateTableSQL(conn, database, table.getName());
+            table.setCreateSql(createSql);
             table.setFullColumn(columns);
         }
         db.setTableInfos(tableList);
@@ -74,7 +75,7 @@ public class PoiTlUtil {
 
     public static XWPFTemplate loadTemplate2(Map<String,Object> data,Configure config) throws IOException, SQLException {
 
-        //4选择模板
+        //1选择模板
         PathMatchingResourcePatternResolver patternResolver = new PathMatchingResourcePatternResolver();
         Resource resource = patternResolver.getResource("template/template.docx");
         // 获取InputStream

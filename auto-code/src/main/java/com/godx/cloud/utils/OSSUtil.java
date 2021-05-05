@@ -90,7 +90,7 @@ public class OSSUtil {
             }
             //上传文件
             PutObjectResult result = ossClient.putObject(new PutObjectRequest(bucketName, ossFilePath, file));
-            //设置权限 这里是公开读
+            //设置权限 这里是private 不公开
             ossClient.setBucketAcl(bucketName,CannedAccessControlList.Private);
             if(null != result){
                 log.info("==========>OSS文件上传成功,OSS地址："+ossFilePath);

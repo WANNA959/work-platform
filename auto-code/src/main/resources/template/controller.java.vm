@@ -10,7 +10,7 @@ $!callback.setSavePath($tool.append($tableInfo.savePath, "/controller"))
 
 #if($tableInfo.savePackageName)package $!{tableInfo.savePackageName}.#{end}controller;
 
-import $!{tableInfo.savePackageName}.entity.$!{tableInfo.name};
+import $!{tableInfo.savePackageName}.model.$!{tableInfo.name};
 import $!{tableInfo.savePackageName}.service.$!{tableInfo.name}Service;
 import org.springframework.web.bind.annotation.*;
 

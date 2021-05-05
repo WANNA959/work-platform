@@ -6,6 +6,7 @@ com\godx\cloud\model\CommonResult.class
 com\godx\cloud\utils\DbUtil.class
 com\godx\cloud\constant\constant.class
 com\godx\cloud\utils\UserUtil.class
+com\godx\cloud\RedisConfig.class
 com\godx\cloud\utils\RedisKeyUtil.class
 com\godx\cloud\model\ColumnInfo.class
 com\godx\cloud\model\LoginTicket.class

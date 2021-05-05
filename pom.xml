@@ -13,10 +13,9 @@
     <module>auth-9528</module>
     <module>api-test</module>
     <module>auto-code</module>
-      <module>config-service-9000</module>
-      <module>auto-doc</module>
-      <module>db-service</module>
-      <module>db-service-9005</module>
+    <module>config-service-9000</module>
+    <module>auto-doc</module>
+    <module>db-service</module>
   </modules>
 
   <name>Maven</name>
@@ -137,6 +136,20 @@
         <configuration>
           <fork>true</fork>
           <addResources>true</addResources>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <includeSystemScope>true</includeSystemScope>
         </configuration>
       </plugin>
     </plugins>

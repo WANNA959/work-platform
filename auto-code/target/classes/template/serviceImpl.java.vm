@@ -11,7 +11,7 @@ $!callback.setSavePath($tool.append($tableInfo.savePath, "/service/impl"))
 
 #if($tableInfo.savePackageName)package $!{tableInfo.savePackageName}.#{end}service.impl;
 
-import $!{tableInfo.savePackageName}.entity.$!{tableInfo.name};
+import $!{tableInfo.savePackageName}.model.$!{tableInfo.name};
 import $!{tableInfo.savePackageName}.dao.$!{tableInfo.name}Dao;
 import $!{tableInfo.savePackageName}.service.$!{tableInfo.name}Service;
 import org.springframework.stereotype.Service;
@@ -77,6 +77,7 @@ public class $!{tableName} implements $!{tableInfo.name}Service {
         return this.queryById($!{tool.firstLowerCase($!{tableInfo.name})}.get$!tool.firstUpperCase($pk.name)());
     }
 
+#serviceImpl()
     /**
      * 通过主键删除数据
      *

@@ -1,5 +1,7 @@
 package com.godx.cloud.controller;
 
+import cn.hutool.core.date.DateField;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import com.godx.cloud.dao.UserDao;
 import com.godx.cloud.model.CommonResult;
@@ -27,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.security.Principal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -110,25 +113,35 @@ public class UserController implements constant{
         //通过
         if(msg==null || "".equals(msg)){
             msg="ok";
-            return custom(tokenEndpoint.postAccessToken(principal, parameters).getBody(),msg,username);
+            return custom(tokenEndpoint.postAccessToken(principal, parameters).getBody(),msg,username,rememberme.equals("true")?true:false);
         } else{//不通过
             return new CommonResult(STATUS_SUC,msg);
         }
     }
 
-    private CommonResult custom(OAuth2AccessToken accessToken,String msg,String username) {
+    private CommonResult custom(OAuth2AccessToken accessToken,String msg,String username,boolean remember) {
         DefaultOAuth2AccessToken token = (DefaultOAuth2AccessToken) accessToken;
+        Date newDate=null;
+        //默认6 小时
+        newDate = DateUtil.offsetHour(new Date(), 6);
+        if(remember){
+            //7天免登录
+            newDate = DateUtil.offsetDay(new Date(), 7);
+        }
+        token.setExpiration(newDate);
         Map<String, Object> data = new LinkedHashMap(token.getAdditionalInformation());
         data.put("accessToken", token.getValue());
+        data.put("expire",token.getExpiresIn());
         if (token.getRefreshToken() != null) {
             data.put("refreshToken", token.getRefreshToken().getValue());
         }
         User user = userService.getUserByUsername(username);
+        user.setPassword("");
         data.put("user",user);
         String tokenKey = RedisKeyUtil.getTokenKey(token.getValue());
         // todo 统一登录时间
         log.info("tokenkey:"+tokenKey);
-        redisTemplate.opsForValue().set(tokenKey, user, 3600, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(tokenKey, user, token.getExpiresIn(), TimeUnit.SECONDS);
         return new CommonResult(200,msg,data);
     }
 
@@ -304,6 +317,7 @@ public class UserController implements constant{
     }
 
     @PostMapping("/oauth/login2")
+    @Deprecated
     public CommonResult login(String username, String password, String code,
                         boolean rememberme, HttpServletResponse response, @CookieValue("kaptchaOwner") String kaptchaOwner){
 
@@ -347,6 +361,8 @@ public class UserController implements constant{
     public CommonResult logout(@RequestHeader("Authorization") String accessToken){
         log.info(accessToken.substring(7));
         if (consumerTokenServices.revokeToken(accessToken.substring(7))) {
+            String tokenKey = RedisKeyUtil.getTokenKey(accessToken.substring(7));
+            redisTemplate.delete(tokenKey);
             return new CommonResult(STATUS_SUC,MESSAGE_OK);
         }
         return new CommonResult(401,"fail to logout");

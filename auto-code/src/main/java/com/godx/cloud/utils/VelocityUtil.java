@@ -8,6 +8,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.junit.Test;
 
+import javax.naming.Name;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
@@ -24,11 +25,13 @@ public class VelocityUtil {
     public void testModel() throws IOException, SQLException {
         loadProperties();
         String type="model";
-        String name="Test";
+//        String name="download_info";
+        String name="test";
+        String database="work_platform";
         Connection conn = mySQLOpen("wanna959","Zhujianxing959","rm-bp167k6429i8drmq71o.mysql.rds.aliyuncs.com","3306","work_platform");
-        VelocityContext context = loadContext(conn);
+        VelocityContext context = loadContext(conn,database,name);
         Template template = loadVmTemplate(type);
-        String localFilePath="/Users/bytedance/IdeaProjects/code/test";
+        String localFilePath="C:/Users/Albert Zhu/Desktop/data/code/";
         generateFile(type,name,template,context,localFilePath);
     }
 
@@ -36,11 +39,13 @@ public class VelocityUtil {
     public void testDao() throws IOException, SQLException {
         loadProperties();
         String type="dao";
-        String name="Test";
+//        String name="download_info";
+        String name="test";
+        String database="work_platform";
         Connection conn = mySQLOpen("wanna959","Zhujianxing959","rm-bp167k6429i8drmq71o.mysql.rds.aliyuncs.com","3306","work_platform");
-        VelocityContext context = loadContext(conn);
+        VelocityContext context = loadContext(conn,database,name);
         Template template = loadVmTemplate(type);
-        String localFilePath="/Users/bytedance/IdeaProjects/code/test";
+        String localFilePath="C:/Users/Albert Zhu/Desktop/data/code/";
         generateFile(type,name,template,context,localFilePath);
     }
 
@@ -48,11 +53,13 @@ public class VelocityUtil {
     public void testService() throws IOException, SQLException {
         loadProperties();
         String type="service";
-        String name="Test";
+//        String name="download_info";
+        String name="test";
+        String database="work_platform";
         Connection conn = mySQLOpen("wanna959","Zhujianxing959","rm-bp167k6429i8drmq71o.mysql.rds.aliyuncs.com","3306","work_platform");
-        VelocityContext context = loadContext(conn);
+        VelocityContext context = loadContext(conn,database,name);
         Template template = loadVmTemplate(type);
-        String localFilePath="/Users/bytedance/IdeaProjects/code/test";
+        String localFilePath="C:/Users/Albert Zhu/Desktop/data/code/";
         generateFile(type,name,template,context,localFilePath);
     }
 
@@ -60,11 +67,12 @@ public class VelocityUtil {
     public void testController() throws IOException, SQLException {
         loadProperties();
         String type="controller";
-        String name="Test";
+        String name="download_info";
+        String database="work_platform";
         Connection conn = mySQLOpen("wanna959","Zhujianxing959","rm-bp167k6429i8drmq71o.mysql.rds.aliyuncs.com","3306","work_platform");
-        VelocityContext context = loadContext(conn);
+        VelocityContext context = loadContext(conn,database,name);
         Template template = loadVmTemplate(type);
-        String localFilePath="/Users/bytedance/IdeaProjects/code/test";
+        String localFilePath="C:/Users/Albert Zhu/Desktop/data/code/";
         generateFile(type,name,template,context,localFilePath);
     }
 
@@ -72,23 +80,27 @@ public class VelocityUtil {
     public void testMapper() throws IOException, SQLException {
         loadProperties();
         String type="mapper";
-        String name="Test";
+//        String name="download_info";
+        String name="test";
+        String database="work_platform";
         Connection conn = mySQLOpen("wanna959","Zhujianxing959","rm-bp167k6429i8drmq71o.mysql.rds.aliyuncs.com","3306","work_platform");
-        VelocityContext context = loadContext(conn);
+        VelocityContext context = loadContext(conn,database,name);
         Template template = loadVmTemplate(type);
-        String localFilePath="/Users/bytedance/IdeaProjects/code/test";
+        String localFilePath="C:/Users/Albert Zhu/Desktop/data/code/";
         generateFile(type,name,template,context,localFilePath);
     }
 
     @Test
-    public static void testServiceImpl() throws IOException, SQLException {
+    public void testServiceImpl() throws IOException, SQLException {
         loadProperties();
         String type="serviceImpl";
-        String name="Test";
+//        String name="download_info";
+        String name="test";
+        String database="work_platform";
         Connection conn = mySQLOpen("wanna959","Zhujianxing959","rm-bp167k6429i8drmq71o.mysql.rds.aliyuncs.com","3306","work_platform");
-        VelocityContext context = loadContext(conn);
+        VelocityContext context = loadContext(conn,database,name);
         Template template = loadVmTemplate(type);
-        String localFilePath="/Users/bytedance/IdeaProjects/code/test";
+        String localFilePath="C:/Users/Albert Zhu/Desktop/data/code/";
         generateFile(type,name,template,context,localFilePath);
     }
 
@@ -103,7 +115,31 @@ public class VelocityUtil {
         Velocity.init(prop);
     }
 
-    public static VelocityContext loadContext(Connection conn) throws SQLException {
+    public static List<ColumnInfo> getUniKeyColumns(Connection conn,String database,String table){
+        List<ColumnInfo> tableInfos = DbUtil.getTableInfo(conn, database, table);
+        List<ColumnInfo> res = new ArrayList<>();
+        for(ColumnInfo info:tableInfos){
+            if("UNI".equals(info.getKey())){
+                info.setShortType(sqlTypeToJava(info.getShortType()));
+                info.setName(NameUtil.getInstance().getJavaName(info.getRawName()));
+                res.add(info);
+            }
+        }
+        return res;
+    }
+
+    public static List<ColumnInfo> getMulKeyColumns(Connection conn,String database,String table){
+        List<ColumnInfo> tableInfos = DbUtil.getTableInfo(conn, database, table);
+        List<ColumnInfo> res = new ArrayList<>();
+        for(ColumnInfo info:tableInfos){
+            if("MUL".equals(info.getKey())){
+                res.add(info);
+            }
+        }
+        return res;
+    }
+
+    public static VelocityContext loadContext(Connection conn,String database,String table) throws SQLException {
         //2 创建上下文对象 将数据对象添加到此上下文中
         VelocityContext context = new VelocityContext();
         //添加java类，才能调用java方法
@@ -113,7 +149,7 @@ public class VelocityUtil {
 
         List<String> tempList = new ArrayList<String>();
         context.put("importList", tempList);
-        context.put("author", "hello");
+        context.put("author", "work_platform");
 
         //数据库
 //        Connection conn = null;
@@ -125,17 +161,27 @@ public class VelocityUtil {
 //        rsmd = pstmt.getMetaData();             // 每个表共有多少列
 //        int size = rsmd.getColumnCount();            //把字段放在集合里面
         DatabaseMetaData metaData = conn.getMetaData();
-        ResultSet columnsRs = metaData.getColumns(null,null,"test",null);
+        ResultSet columnsRs = metaData.getColumns(null,null,table,null);
 
         TableInfo tableInfo = new TableInfo();
         //tableName
-        tableInfo.setName("Test");
+        NameUtil nameUtil = NameUtil.getInstance();
+        tableInfo.setName(nameUtil.firstUpperCase(nameUtil.getJavaName(table)));
         //packageName
         tableInfo.setSavePackageName("com.godx.cloud");
         //dbName
         tableInfo.setDBName("work_platform");
         //rawName
-        tableInfo.setRawName("test");
+        tableInfo.setRawName(table);
+        //mul key
+        List<ColumnInfo> mulKeyColumns = getMulKeyColumns(conn, database, table);
+        context.put("mulKeyColumns", mulKeyColumns);
+        log.info("mulKeyColumns:"+mulKeyColumns.toString());
+        //uni key
+        List<ColumnInfo> uniKeyColumns = getUniKeyColumns(conn, database, table);
+        context.put("uniKeyColumns", uniKeyColumns);
+        log.info("uniKeyColumns:"+uniKeyColumns.toString());
+
         //columns
         List<ColumnInfo> list = new ArrayList<>();
         while (columnsRs.next()) {
@@ -156,7 +202,7 @@ public class VelocityUtil {
         }
         tableInfo.setFullColumn(list);
         //pk
-        ResultSet pkColumn = metaData.getPrimaryKeys(null, null, "test");
+        ResultSet pkColumn = metaData.getPrimaryKeys(null, null, table);
         Set<String> pkSet=new HashSet<>();
         List<ColumnInfo> pkList = new ArrayList<>();
         if (!pkColumn.isAfterLast()) {
@@ -204,8 +250,15 @@ public class VelocityUtil {
     public static Template loadVmTemplate(String fileType) throws IOException, SQLException {
 
         //4选择模板
-//        Velocity.getTemplate("./Default/init.vm");
-//        Velocity.getTemplate("./Default/autoImport.vm");
+        Velocity.getTemplate("./Default/define.vm");
+        Velocity.getTemplate("./Default/autoImport.vm");
+        Velocity.getTemplate("./Default/mybatisSupport.vm");
+        Velocity.getTemplate("./Default/init.vm");
+        Velocity.getTemplate("./Default/autoUpdate.vm");
+
+        // 可以选择所有字段查询，故此处不再特别生成索引的查询方法
+//        Velocity.getTemplate("./Default/autoSelect.vm");
+
         Template template;
         if(fileType.equals("mapper")){
             template = Velocity.getTemplate("./template/"+fileType+".xml.vm");
@@ -216,6 +269,8 @@ public class VelocityUtil {
     }
 
     public static String type2fileName(String type,String name){
+        NameUtil nameUtil = NameUtil.getInstance();
+        name=nameUtil.firstUpperCase(nameUtil.getJavaName(name));
         switch (type){
             case "model":
                 return name+".java";

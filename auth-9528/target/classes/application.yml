@@ -19,7 +19,7 @@ spring:
     password: zhujianxing959
   mail:
     host: smtp.163.com
-    port: 465
+    port: 25
     username: wannazjx@163.com
     password: LQXFREUCTGRHLVQP
     protocol: smtps
@@ -32,7 +32,7 @@ spring:
     # 注册进 nacos Server
     nacos:
       discovery:
-        server-addr: godx.cloud:8848
+        server-addr: 47.99.131.144:8848
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

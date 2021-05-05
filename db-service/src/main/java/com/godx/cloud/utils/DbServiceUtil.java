@@ -20,9 +20,13 @@ public class DbServiceUtil {
 
     public static void writeCsvDataFile(Connection conn,String database, String table,String filePath) throws SQLException, IOException {
 //        String sql= String.format("select * from %s ",tables.get(0));
-        String sql= String.format("select * from %s ",table);
-        PreparedStatement pst=conn.prepareStatement(sql);
-        ResultSet rs = pst.executeQuery(sql);
+        String sqlCount=String.format("select count(*) from %s ",table);
+        PreparedStatement pst=conn.prepareStatement(sqlCount);
+        ResultSet resultSet = pst.executeQuery(sqlCount);
+        Integer count=null;
+        if(resultSet.next()) {
+            count = resultSet.getInt(1);
+        }
 
         CsvWriter csvWriter=new CsvWriter(filePath+"/"+table+"_data.csv",',', Charset.forName("utf-8"));
         List<ColumnInfo> columns = DbUtil.getTableInfo(conn, database, table);
@@ -33,13 +37,24 @@ public class DbServiceUtil {
         }
         csvWriter.writeRecord(headers);
 
-        while (rs.next()) {
-            int idx2=0;
-            String[] content = new String[idx];
-            for(idx2=0;idx2<idx;idx2++){
-                content[idx2]=rs.getString(headers[idx2]);
+        //追加写 batch=10000
+        int batchSize=10000;
+        int times=count/batchSize;
+        if(count%batchSize!=0){
+            times++;
+        }
+        for(int i=0;i<=times;i++){
+            String sql= String.format("select * from %s limit %d offset %d",table,batchSize,i*batchSize);
+            PreparedStatement pst2=conn.prepareStatement(sql);
+            ResultSet rs = pst2.executeQuery(sql);
+            while (rs.next()) {
+                int idx2=0;
+                String[] content = new String[idx];
+                for(idx2=0;idx2<idx;idx2++){
+                    content[idx2]=rs.getString(headers[idx2]);
+                }
+                csvWriter.writeRecord(content);
             }
-            csvWriter.writeRecord(content);
         }
         csvWriter.close();
     }

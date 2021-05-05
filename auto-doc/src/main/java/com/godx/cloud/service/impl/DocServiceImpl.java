@@ -40,7 +40,8 @@ public class DocServiceImpl implements DocService {
     public String getDbInfoDoc(Connection connection, String database,User user) throws IOException, SQLException {
         XWPFTemplate template = PoiTlUtil.loadContext2(connection, database);
 
-        String localFilePath="/Users/bytedance/IdeaProjects/doc/"+ IdUtil.simpleUUID();
+//        String localFilePath="/Users/bytedance/IdeaProjects/doc/"+ IdUtil.simpleUUID();
+        String localFilePath="C:/Users/Albert Zhu/Desktop/data/doc/"+ IdUtil.simpleUUID();
         PoiTlUtil.generateFile2(template,localFilePath+"/tmp.docx");
         //打包 压缩包名字
         String localZipPath=localFilePath+"/tmp.zip";

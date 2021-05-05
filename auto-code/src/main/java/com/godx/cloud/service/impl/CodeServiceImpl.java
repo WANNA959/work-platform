@@ -41,7 +41,6 @@ public class CodeServiceImpl implements CodeService {
     public void getMybatisCode(String username, String password,String host,String port, String database, List<String> tables,String token) throws IOException, SQLException {
         VelocityUtil.loadProperties();
         Connection connection = DbUtil.mySQLOpen(username, password, host, port, database);
-        VelocityContext context = VelocityUtil.loadContext(connection);
 
         List<String> types=new ArrayList<String>();
         types.add("model");
@@ -50,9 +49,10 @@ public class CodeServiceImpl implements CodeService {
         types.add("serviceImpl");
         types.add("controller");
         types.add("mapper");
-        String name="Test";
-        String localFilePath="/Users/bytedance/IdeaProjects/code/"+ IdUtil.simpleUUID();
+        String localFilePath="C:/Users/Albert Zhu/Desktop/data/code/"+ IdUtil.simpleUUID();
+
         for(String table:tables){
+            VelocityContext context = VelocityUtil.loadContext(connection,database,table);
             for(String type:types){
                 Template template = VelocityUtil.loadVmTemplate(type);
                 localFilePath = VelocityUtil.generateFile(type, table, template, context,localFilePath);

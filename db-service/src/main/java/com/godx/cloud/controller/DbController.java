@@ -7,6 +7,7 @@ import com.godx.cloud.constant.constant;
 import com.godx.cloud.model.*;
 import com.godx.cloud.service.DbService;
 import com.godx.cloud.utils.*;
+import jdk.net.SocketFlow;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
@@ -45,22 +46,20 @@ public class DbController implements constant {
     private String dbDataPath;
 
     @PostMapping("/dbinsert")
-    public CommonResult dbInsert(@Param("id") Integer id,@Param("table") String table, @RequestHeader("Authorization")String token) {
-//        @RequestParam("file") MultipartFile file
-//        if (file.isEmpty()) {
-//            return new CommonResult(STATUS_BADREQUEST,"上传失败，请选择文件");
-//        }
-//
-//        String fileName = file.getOriginalFilename();
-//        String filePath = "C:/Users/Albert Zhu/Desktop/data/db/insert/insert";
-//        File dest = new File(filePath + fileName);
-//        try {
-//            file.transferTo(dest);
-//            return new CommonResult(STATUS_BADREQUEST,"上传成功");
-//        } catch (IOException e) {
-//            log.error(e.toString(), e);
-//        }
-//        return new CommonResult(STATUS_BADREQUEST,"上传失败");
+    public CommonResult dbInsert(@Param("id") Integer id,@Param("table") String table, @RequestHeader("Authorization")String token,@RequestParam("file") MultipartFile file) {
+
+        if (file.isEmpty()) {
+            return new CommonResult(STATUS_BADREQUEST,"上传失败，请选择文件");
+        }
+
+        String filePath = "C:/Users/Albert Zhu/Desktop/data/db/insert/"+IdUtil.simpleUUID()+".csv";
+        File dest = new File(filePath);
+        try {
+            file.transferTo(dest);
+        } catch (IOException e) {
+            log.error(e.toString(), e);
+            return new CommonResult(STATUS_BADREQUEST,"上传失败");
+        }
 
         DbInfo dbInfo = dbService.selectOne(id);
         if(dbInfo==null){
@@ -74,7 +73,7 @@ public class DbController implements constant {
         if(dbInfo.getUserId()!=user.getId()){
             return new CommonResult(STATUS_BADREQUEST,"fail");
         }
-        String filePath = "C:\\Users\\Albert Zhu\\Desktop\\data\\db\\cda9587a6fbd4e0ea7445a4a3d8aeda2\\test2.csv";
+//        String filePath = "C:\\Users\\Albert Zhu\\Desktop\\data\\db\\cda9587a6fbd4e0ea7445a4a3d8aeda2\\test2.csv";
         List<String> listData = new ArrayList<>();
 //        Connection connection = DbUtil.mySQLOpen("wanna959", "Zhujianxing959", "rm-bp167k6429i8drmq71o.mysql.rds.aliyuncs.com", "3306", "work_platform");
         Connection connection = DbUtil.mySQLOpen(dbInfo.getUsername(), dbInfo.getPassword(), dbInfo.getHost(), dbInfo.getPort(), dbInfo.getDbName());
@@ -85,7 +84,7 @@ public class DbController implements constant {
             boolean re = csvReader.readHeaders();
             if (!re){
                 //表头无法识别错误
-                log.info("wrong1");
+                return new CommonResult(STATUS_BADREQUEST,"文件表头无法识别");
             }
             String[] headers = csvReader.getHeaders();
             log.info(headers[0]);
@@ -100,7 +99,7 @@ public class DbController implements constant {
                     }
                     else {
                         //列名称无法识别错误
-                        log.info("wrong1");
+                        return new CommonResult(STATUS_BADREQUEST,"文件列明无法识别");
                     }
                 }
 
@@ -114,7 +113,7 @@ public class DbController implements constant {
                 }
                 if(flag==0){
                     //列名称无法识别错误
-                    log.info("wrong2");
+                    return new CommonResult(STATUS_BADREQUEST,"文件列明无法识别");
                 }
             }
             sqlStr=sqlStr.substring(0,sqlStr.length()-1);
@@ -158,26 +157,6 @@ public class DbController implements constant {
             return new CommonResult(STATUS_BADREQUEST,e.getMessage());
         }
         return new CommonResult(STATUS_SUC,"批量导入成功");
-    }
-
-    @GetMapping("/test")
-    public void test(){
-        String filePath = "C:\\Users\\Albert Zhu\\Desktop\\data\\db\\cda9587a6fbd4e0ea7445a4a3d8aeda2\\test.csv";
-        List<String> listData = new ArrayList<>();
-        try {
-            CsvReader csvReader = new CsvReader(filePath);
-            // 读表头
-            boolean re = csvReader.readHeaders();
-            while (csvReader.readRecord()) {
-                String rawRecord = csvReader.getRawRecord();
-                listData.add(rawRecord);
-            }
-
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException("文件未找到");
-        } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }
     }
 
     @GetMapping("/getinfo")

@@ -83,6 +83,7 @@ public interface $!{tableName} {
      */
     int update($!{tableInfo.name} $!tool.firstLowerCase($!{tableInfo.name}));
 
+#dao()
     /**
      * 通过主键删除数据
      *

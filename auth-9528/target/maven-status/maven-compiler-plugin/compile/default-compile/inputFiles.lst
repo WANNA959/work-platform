@@ -1,9 +1,9 @@
 E:\IDEA_Project\work_platform\auth-9528\src\main\java\com\godx\cloud\service\MailClient.java
 E:\IDEA_Project\work_platform\auth-9528\src\main\java\com\godx\cloud\config\JwtConfig.java
+E:\IDEA_Project\work_platform\auth-9528\src\main\java\com\godx\cloud\config\RedisConfig.java
 E:\IDEA_Project\work_platform\auth-9528\src\main\java\com\godx\cloud\AuthMain9528.java
 E:\IDEA_Project\work_platform\auth-9528\src\main\java\com\godx\cloud\controller\UserController.java
 E:\IDEA_Project\work_platform\auth-9528\src\main\java\com\godx\cloud\config\AuthorizationServerConfig.java
-E:\IDEA_Project\work_platform\auth-9528\src\main\java\com\godx\cloud\config\RedisSessionConfig.java
 E:\IDEA_Project\work_platform\auth-9528\src\main\java\com\godx\cloud\config\KaptchaConfig.java
 E:\IDEA_Project\work_platform\auth-9528\src\main\java\com\godx\cloud\config\WebSecurityConfig.java
 E:\IDEA_Project\work_platform\auth-9528\src\main\java\com\godx\cloud\config\ResourceServerConfig.java

@@ -11,7 +11,7 @@ $!callback.setSavePath($tool.append($tableInfo.savePath, "/service"))
 
 #if($tableInfo.savePackageName)package $!{tableInfo.savePackageName}.#{end}service;
 
-import $!{tableInfo.savePackageName}.entity.$!{tableInfo.name};
+import $!{tableInfo.savePackageName}.model.$!{tableInfo.name};
 import java.util.List;
 
 /**
@@ -39,6 +39,8 @@ public interface $!{tableName} {
      */
     List<$!{tableInfo.name}> queryAllByLimit(int offset, int limit);
 
+#serviceSelect()
+
     /**
      * 新增数据
      *
@@ -55,6 +57,8 @@ public interface $!{tableName} {
      */
     $!{tableInfo.name} update($!{tableInfo.name} $!tool.firstLowerCase($!{tableInfo.name}));
 
+#parse("Default/autoUpdate.vm")
+#serviceUpdate()
     /**
      * 通过主键删除数据
      *

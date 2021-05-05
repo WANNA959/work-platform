@@ -15,9 +15,9 @@
     </select>
 
     <insert id="insertUser" keyProperty="id" useGeneratedKeys="true">
-        INSERT INTO `user` (`username`, `password`, `salt`, `email`, `type`, `status`, `activation_code`, `header_url`, `create_time`, `update_time`)
+        INSERT INTO `user` (`username`, `password`, `salt`, `email`, `type`, `status`, `activation_code`, `header_url`, `create_time`, `update_time`, `reset_code`)
         VALUES
-        (#{username}, #{password}, #{salt}, #{email}, #{type}, #{status}, #{activationCode}, #{headerUrl}, #{createTime}, #{updateTime})
+        (#{username}, #{password}, #{salt}, #{email}, #{type}, #{status}, #{activationCode}, #{headerUrl}, #{createTime}, #{updateTime}, #{resetCode})
     </insert>
 
     <update id="updateStatusById">

@@ -115,8 +115,10 @@ public class DbUtil {
             while (rs.next()) {                //System.out.println(rs.getString("TABLE_NAME"));
                 ColumnInfo tmp=new ColumnInfo();
                 tmp.setName(rs.getString("COLUMN_NAME"));
+                tmp.setRawName(rs.getString("COLUMN_NAME"));
                 tmp.setType(rs.getString("COLUMN_TYPE"));
                 tmp.setComment(rs.getString("COLUMN_COMMENT"));
+                tmp.setShortType(rs.getString("DATA_TYPE"));
                 tmp.setKey(rs.getString("COLUMN_KEY"));
                 Map<String,Object> map=new HashMap<>();
                 map.put("default",rs.getString("COLUMN_DEFAULT"));
@@ -129,6 +131,28 @@ public class DbUtil {
             e.printStackTrace();
         }
         return columnList;
+    }
+
+    /**
+     * 获得当前数据库 某表的建表语句
+     *
+     */
+    public static String getCreateTableSQL(Connection conn,String database,String table) {
+        String createSql=null;
+        try {
+            String sql= String.format("show create table '%s.%s'", database,table);
+            PreparedStatement pst=conn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery(sql);
+            if (rs == null) {
+                return null;
+            }
+            while (rs.next()) {                //System.out.println(rs.getString("TABLE_NAME"));
+                createSql = rs.getString("CREATE_TABLE");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return createSql;
     }
 
 //    @Test
@@ -210,6 +234,7 @@ public class DbUtil {
             case "VARCHAR":
             case "VARCHAR2":
             case "CHAR":
+            case "TEXT":
                 return "String";
             case "NUMBER":
             case "DECIMAL":
@@ -217,6 +242,7 @@ public class DbUtil {
             case "INT":
             case "SMALLINT":
             case "INTEGER":
+            case "INT UNSIGNED":
                 return "int";
             case "BIGINT":
                 return "int";
