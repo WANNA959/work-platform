@@ -139,7 +139,6 @@ public class UserController implements constant{
         user.setPassword("");
         data.put("user",user);
         String tokenKey = RedisKeyUtil.getTokenKey(token.getValue());
-        // todo 统一登录时间
         log.info("tokenkey:"+tokenKey);
         redisTemplate.opsForValue().set(tokenKey, user, token.getExpiresIn(), TimeUnit.SECONDS);
         return new CommonResult(200,msg,data);
