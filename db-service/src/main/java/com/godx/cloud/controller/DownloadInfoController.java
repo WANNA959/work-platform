@@ -6,7 +6,6 @@ import com.godx.cloud.model.DownloadInfo;
 import com.godx.cloud.model.User;
 import com.godx.cloud.service.DownloadInfoService;
 import com.godx.cloud.utils.RedisKeyUtil;
-import com.godx.cloud.utils.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +27,7 @@ import java.util.Map;
  * @since 2021-03-25 19:37:51
  */
 @RestController
-@RequestMapping("/api/code")
+@RequestMapping("/api/db")
 @Slf4j
 public class DownloadInfoController implements constant {
     /**
@@ -45,7 +44,7 @@ public class DownloadInfoController implements constant {
      * @param id 主键
      * @return 单条数据
      */
-    @GetMapping("selectOne")
+    @GetMapping("/selectOne")
     public DownloadInfo selectOne(Integer id) {
         return this.downloadInfoService.queryById(id);
     }

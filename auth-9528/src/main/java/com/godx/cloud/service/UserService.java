@@ -8,7 +8,6 @@ import com.godx.cloud.model.CommonResult;
 import com.godx.cloud.model.LoginTicket;
 import com.godx.cloud.model.User;
 import com.godx.cloud.utils.RedisKeyUtil;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;

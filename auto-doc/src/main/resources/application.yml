@@ -1,6 +1,6 @@
 # 服务端口号
 server:
-  port: 9002
+  port: 9012
 
 # 服务名
 spring:
@@ -33,10 +33,27 @@ spring:
           ssl:
             enable: true
   cloud:
-    # 注册进 nacos Server
-    nacos:
-      discovery:
-        server-addr: 47.99.131.144:8848
+    sentinel:
+      transport:
+        # 配置 Sentinel Dashboard 的地址
+#        dashboard: 47.99.131.144:8080
+        dashboard: localhost:8080
+        # 默认8719 ，如果端口被占用，端口号会自动 +1，提供给 sentinel 的监控端口
+        port: 8719
+      datasource:
+        ds1:
+          nacos:
+            server-addr: 47.99.131.144:8848
+            dataId: auto-doc
+            group: DEFAULT_GROUP
+            data-type: json
+            rule-type: flow
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

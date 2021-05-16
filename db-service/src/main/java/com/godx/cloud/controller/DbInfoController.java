@@ -26,7 +26,7 @@ import java.util.Map;
  * @since 2021-03-29 19:49:01
  */
 @RestController
-@RequestMapping("/api/code")
+@RequestMapping("/api/db")
 @Slf4j
 public class DbInfoController implements constant {
     /**
@@ -166,7 +166,6 @@ public class DbInfoController implements constant {
     public CommonResult insertDbItem(DbInfo info, @RequestHeader("Authorization")String token){
         String tokenKey = RedisKeyUtil.getTokenKey(token.substring(7));
         User user =(User) redisTemplate.opsForValue().get(tokenKey);
-        log.info(redisTemplate.opsForValue().get("token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjAyMDQxMzAsInVzZXJfbmFtZSI6InpqeCIsImF1dGhvcml0aWVzIjpbImFkbWluIl0sImp0aSI6IjRiOWY1YmE4LTY3MmYtNDRmYi1hOTZmLWY2N2NiYzNmNjE4ZiIsImNsaWVudF9pZCI6ImNsaWVudF8xIiwic2NvcGUiOlsiYWxsIl19.GQE9PYaIoD2CEh9vKWpHE5ebvx_gBXM5NcxeEvy-D7Y").toString());
         log.info("token: "+tokenKey);
         Integer userId=null;
         if(user!=null){

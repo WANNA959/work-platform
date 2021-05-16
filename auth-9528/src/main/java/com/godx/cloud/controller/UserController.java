@@ -225,28 +225,28 @@ public class UserController implements constant{
 //        return "/site/operate-result";
     }
 
-    @PostMapping("/oauth/modifypass")
-    public CommonResult modifypass(User user,String newPass,String checkNewPass,String code,@CookieValue("kaptchaOwner") String kaptchaOwner){
-
-        String kaptcha=null;
-        if (!StringUtils.isBlank(kaptchaOwner)){
-            String redisKey=RedisKeyUtil.getKaptcharKey(kaptchaOwner);
-            kaptcha= (String) redisTemplate.opsForValue().get(redisKey);
-        }
-
-        if (StringUtils.isBlank(kaptcha) || StringUtils.isBlank(code) || !code.equalsIgnoreCase(kaptcha)){
-            return new CommonResult(400,"验证码不正确");
-        }
-
-        CommonResult result = userService.modifypass(user);
-        if ("ok".equals(result.getMessage())){
-            result.setMessage("请求修改密码成功，我们已经向您的邮箱发送了一封激活邮件，请尽快查看并确认修改密码！");
-//            model.addAttribute("msg","注册成功，我们已经向您的邮箱发送了一封激活邮件，请尽快查看并激活！");
-//            model.addAttribute("target",path+"/index");
-//            return "/site/operate-result";
-        }
-        return result;
-    }
+//    @PostMapping("/oauth/modifypass")
+//    public CommonResult modifypass(User user,String newPass,String checkNewPass,String code,@CookieValue("kaptchaOwner") String kaptchaOwner){
+//
+//        String kaptcha=null;
+//        if (!StringUtils.isBlank(kaptchaOwner)){
+//            String redisKey=RedisKeyUtil.getKaptcharKey(kaptchaOwner);
+//            kaptcha= (String) redisTemplate.opsForValue().get(redisKey);
+//        }
+//
+//        if (StringUtils.isBlank(kaptcha) || StringUtils.isBlank(code) || !code.equalsIgnoreCase(kaptcha)){
+//            return new CommonResult(400,"验证码不正确");
+//        }
+//
+//        CommonResult result = userService.modifypass(user);
+//        if ("ok".equals(result.getMessage())){
+//            result.setMessage("请求修改密码成功，我们已经向您的邮箱发送了一封确认邮件，请尽快查看并确认修改密码！");
+////            model.addAttribute("msg","注册成功，我们已经向您的邮箱发送了一封激活邮件，请尽快查看并激活！");
+////            model.addAttribute("target",path+"/index");
+////            return "/site/operate-result";
+//        }
+//        return result;
+//    }
 
     // https://localhost:8088/community/activation/id/code
     //restful格式

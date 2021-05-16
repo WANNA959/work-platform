@@ -5,7 +5,8 @@ import com.alibaba.fastjson.JSON;
 import com.csvreader.CsvReader;
 import com.godx.cloud.constant.constant;
 import com.godx.cloud.model.*;
-import com.godx.cloud.service.DbService;
+import com.godx.cloud.service.DbInfoService;
+import com.godx.cloud.service.DownloadInfoService;
 import com.godx.cloud.utils.*;
 import jdk.net.SocketFlow;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +38,10 @@ import java.util.Map;
 public class DbController implements constant {
 
     @Resource
-    private DbService dbService;
+    private DbInfoService dbInfoService;
+
+    @Resource
+    private DownloadInfoService downloadInfoService;
 
     @Resource
     private RedisTemplate redisTemplate;
@@ -61,7 +65,7 @@ public class DbController implements constant {
             return new CommonResult(STATUS_BADREQUEST,"上传失败");
         }
 
-        DbInfo dbInfo = dbService.selectOne(id);
+        DbInfo dbInfo = dbInfoService.queryById(id);
         if(dbInfo==null){
             return new CommonResult(STATUS_BADREQUEST,"fail");
         }
@@ -161,7 +165,7 @@ public class DbController implements constant {
 
     @GetMapping("/getinfo")
     public CommonResult getinfo(@RequestParam("id") Integer id, @RequestHeader("Authorization")String token, HttpServletResponse response) throws SQLException, IOException {
-        DbInfo dbInfo = dbService.selectOne(id);
+        DbInfo dbInfo = dbInfoService.queryById(id);
         if(dbInfo==null){
             return new CommonResult(STATUS_BADREQUEST,"fail");
         }
@@ -209,7 +213,7 @@ public class DbController implements constant {
         info.setUsername(dbInfo.getUsername());
         info.setTables(dbInfo.getTables());
 
-        dbService.insertItem(info);
+        downloadInfoService.insert(info);
 
         return new CommonResult(STATUS_SUC,"ok");
     }

@@ -4,7 +4,6 @@ import com.godx.cloud.dao.DownloadInfoDao;
 import com.godx.cloud.model.DownloadInfo;
 import com.godx.cloud.model.User;
 import com.godx.cloud.service.DownloadInfoService;
-import com.godx.cloud.service.UserService;
 import com.godx.cloud.utils.OSSUtil;
 import com.godx.cloud.utils.UserUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -29,9 +28,6 @@ import java.util.Map;
 public class DownloadInfoServiceImpl implements DownloadInfoService {
     @Resource
     private DownloadInfoDao downloadInfoDao;
-
-    @Resource
-    private UserService userService;
 
     @Resource
     private RedisTemplate redisTemplate;

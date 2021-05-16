@@ -28,9 +28,9 @@ public interface DbInfoService {
      * @param limit  查询条数
      * @return 对象列表
      */
-    List<DbInfo> queryAllByLimit(int offset, int limit,Map<String,Object> map);
+    List<DbInfo> queryAllByLimit(int offset, int limit, Map<String, Object> map);
 
-    int queryCount( Map<String,Object> map);
+    int queryCount(Map<String, Object> map);
 
     /**
      * 新增数据
@@ -54,6 +54,6 @@ public interface DbInfoService {
      * @param id 主键
      * @return 是否成功
      */
-    boolean deleteById(Integer id,Integer userId);
+    boolean deleteById(Integer id, Integer userId);
 
 }

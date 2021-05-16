@@ -1,6 +1,6 @@
 # 服务端口号
 server:
-  port: 9005
+  port: 9003
 
 # 服务名
 spring:
@@ -32,11 +32,6 @@ spring:
         smtp:
           ssl:
             enable: true
-#  cloud:
-#    # 注册进 nacos Server
-#    nacos:
-#      discovery:
-#        server-addr: localhost:8848
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

@@ -2,10 +2,10 @@ package com.godx.cloud.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSON;
-import com.godx.cloud.dao.DownloadInfoDao;
 import com.godx.cloud.model.DownloadInfo;
 import com.godx.cloud.model.User;
 import com.godx.cloud.service.CodeService;
+import com.godx.cloud.service.DownloadInfoService;
 import com.godx.cloud.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +29,7 @@ import java.util.List;
 public class CodeServiceImpl implements CodeService {
 
     @Resource
-    private DownloadInfoDao downloadInfoDao;
+    private DownloadInfoService downloadInfoService;
     
     @Resource
     private RedisTemplate redisTemplate;
@@ -38,17 +38,20 @@ public class CodeServiceImpl implements CodeService {
     private String CodeMybatisHostPath;
 
     @Override
-    public void getMybatisCode(String username, String password,String host,String port, String database, List<String> tables,String token) throws IOException, SQLException {
+    public String getMybatisCode(String username, String password,String host,String port, String database, List<String> tables,String token,List<String> types) throws IOException, SQLException {
         VelocityUtil.loadProperties();
         Connection connection = DbUtil.mySQLOpen(username, password, host, port, database);
+        if(connection==null){
+            return "数据库连接失败，请检查连接参数";
+        }
 
-        List<String> types=new ArrayList<String>();
-        types.add("model");
-        types.add("dao");
-        types.add("service");
-        types.add("serviceImpl");
-        types.add("controller");
-        types.add("mapper");
+//        List<String> types=new ArrayList<String>();
+//        types.add("model");
+//        types.add("dao");
+//        types.add("service");
+//        types.add("serviceImpl");
+//        types.add("controller");
+//        types.add("mapper");
         String localFilePath="C:/Users/Albert Zhu/Desktop/data/code/"+ IdUtil.simpleUUID();
 
         for(String table:tables){
@@ -88,8 +91,10 @@ public class CodeServiceImpl implements CodeService {
             //todo password加密
             info.setPassword(password);
             log.info("downloadInfo:"+info.toString());
-            downloadInfoDao.insert(info);
+            downloadInfoService.insertItem(info);
+            return "";
+        } else{
+            return "上传OSS失败";
         }
-
     }
 }

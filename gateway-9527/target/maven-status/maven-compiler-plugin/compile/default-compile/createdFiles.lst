@@ -1,0 +1,4 @@
+com\godx\cloud\config\GatewayRoutesConfiguration.class
+com\godx\cloud\config\WebMVCConfig.class
+com\godx\cloud\GatewayMain9527.class
+com\godx\cloud\controller\filter\MyGatewayFilter.class

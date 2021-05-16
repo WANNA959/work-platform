@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient("auto-code")
 @Component
+@Deprecated
 public interface DbService {
 
     @GetMapping("/api/code/selectOnex")

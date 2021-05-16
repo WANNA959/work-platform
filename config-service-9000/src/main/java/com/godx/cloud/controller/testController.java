@@ -25,11 +25,13 @@ public class testController implements constant {
     @Value("${bucket.bucketName}")
     private String bucketName;
 
+    @Value("${version}")
+    private String version;
+
     @GetMapping("/getConfig")
     public CommonResult test1(){
-        log.info(accessKeyId);
-        log.info(accessKeySecret);
-        return new CommonResult(STATUS_SUC,MESSAGE_OK,endpoint);
+        log.info(version);
+        return new CommonResult(STATUS_SUC,MESSAGE_OK,"version="+version);
     }
 
 }
