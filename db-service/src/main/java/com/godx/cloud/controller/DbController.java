@@ -103,7 +103,7 @@ public class DbController implements constant {
                     }
                     else {
                         //列名称无法识别错误
-                        return new CommonResult(STATUS_BADREQUEST,"文件列明无法识别");
+                        return new CommonResult(STATUS_BADREQUEST,"文件列名无法识别");
                     }
                 }
 

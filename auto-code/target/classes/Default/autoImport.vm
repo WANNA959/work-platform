@@ -1,16 +1,12 @@
 ##对importList进行篡改
 #set($temp = $tool.newHashSet())
 #foreach($column in $tableInfo.fullColumn)
-    ##    #if(!$column.type.startsWith("java.lang."))
-    ##        带有反回值的方法调用时使用$tool.call来消除返回值
-    ##        $tool.call($temp.add($column.type))
-    #if(($column.type.startsWith("java.util.")))
-        $tool.call($temp.add($column.type))
-    #end
+#if(($column.type.startsWith("java.util.")))
+    $tool.call($temp.add($column.type))
+#end
 #end
 ##覆盖
 #set($importList = $temp)
-
 ##自动导入包（仅导入实体属性需要的包，通常用于实体类）
 #foreach($import in $importList)
 import $!import;

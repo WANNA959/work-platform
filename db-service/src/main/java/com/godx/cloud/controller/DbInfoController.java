@@ -53,7 +53,18 @@ public class DbInfoController implements constant {
     public CommonResult getDbList(@RequestParam Map<String,Object> request, @RequestHeader("Authorization")String token){
 
         String tmp=null;
-        int pageNum=0,pageSize=0;
+        String tokenKey = RedisKeyUtil.getTokenKey(token.substring(7));
+        User user =(User) redisTemplate.opsForValue().get(tokenKey);
+        log.info("token: "+tokenKey);
+        int userId=0;
+        if(user!=null){
+            log.info(user.toString());
+            userId=user.getId();
+        } else{
+            log.info("no user in redis");
+            return new CommonResult(STATUS_BADREQUEST,"fail to search");
+        }
+        int pageNum=1,pageSize=10;
         if (request.containsKey("pageNum")){
             tmp =(String)request.get("pageNum");
             pageNum = Integer.parseInt(tmp);
@@ -64,9 +75,14 @@ public class DbInfoController implements constant {
         }
 
         Map<String,Object> map=new HashMap<>();
+        map.put("userId",userId);
         if (request.containsKey("host")){
             tmp =(String)request.get("host");
             map.put("host",tmp);
+        }
+        if (request.containsKey("username")){
+            tmp =(String)request.get("username");
+            map.put("username",tmp);
         }
         if (request.containsKey("dbName")){
             tmp =(String)request.get("dbName");

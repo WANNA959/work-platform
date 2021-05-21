@@ -38,6 +38,9 @@
         select *
         from work_platform.db_info
         <where>
+            <if test="map.userId != ''">
+                and user_id=#{map.userId}
+            </if>
             <if test="map.host != null and map.host != ''">
                 and host like '%${map.host}%'
             </if>
@@ -66,6 +69,7 @@
                 and update_time &lt;= #{map.endTime}
             </if>
         </where>
+        order by create_time desc
         limit #{offset}, #{limit}
     </select>
 
@@ -73,6 +77,9 @@
         select count(*)
         from work_platform.db_info
         <where>
+            <if test="map.userId != ''">
+                and user_id=#{map.userId}
+            </if>
             <if test="map.host != null and map.host != ''">
                 and host like '%${map.host}%'
             </if>

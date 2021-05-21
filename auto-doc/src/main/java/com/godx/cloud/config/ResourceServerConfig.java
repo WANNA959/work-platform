@@ -1,5 +1,6 @@
 package com.godx.cloud.config;
 
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -9,6 +10,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @EnableResourceServer
@@ -34,22 +36,16 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	}
 
 	/**
-	 * jwt token 校验解析器
+	 * 调用微服务
+	 * @return
 	 */
-//	@Bean
-//	public TokenStore tokenStore() {
-//		return new JwtTokenStore(accessTokenConverter());
-//	}
-
-	/**
-	 * Token转换器必须与认证服务一致
-	 */
-//	@Bean
-//	public JwtAccessTokenConverter accessTokenConverter() {
-//		JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
-//		accessTokenConverter.setSigningKey("wanna");
-//		return accessTokenConverter;
-//	}
+	@LoadBalanced
+	@Bean
+	public RestTemplate restTemplate() {
+		//httpRequestFactory()
+		RestTemplate restTemplate = new RestTemplate();
+		return restTemplate;
+	}
 
 	/**
 	 * 资源服务令牌解析服务
@@ -57,10 +53,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	@Bean
 	@Primary
 	public ResourceServerTokenServices tokenServices() {
-        RemoteTokenServices remoteTokenServices = new RemoteTokenServices();
-        remoteTokenServices.setCheckTokenEndpointUrl("http://localhost:8443/oauth/check_token");
-        remoteTokenServices.setClientId("client_1");
-        remoteTokenServices.setClientSecret("123456");
-        return remoteTokenServices;
+		RemoteTokenServices remoteTokenServices = new RemoteTokenServices();
+		remoteTokenServices.setCheckTokenEndpointUrl("http://gateway-service/oauth/check_token");
+		remoteTokenServices.setRestTemplate(restTemplate());
+		remoteTokenServices.setClientId("client_1");
+		remoteTokenServices.setClientSecret("123456");
+		return remoteTokenServices;
 	}
 }

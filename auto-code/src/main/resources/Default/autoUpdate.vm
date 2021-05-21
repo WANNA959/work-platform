@@ -1,4 +1,4 @@
-#macro(serviceUpdate)
+#macro(service)
 #foreach($uniKeyColumn in $uniKeyColumns)
     /**
     * 根据唯一索引($!{uniKeyColumn.name})修改数据
@@ -12,7 +12,7 @@
 #end
 #end
 
-#macro(serviceImplUpdate)
+#macro(serviceImpl)
 #foreach($uniKeyColumn in $uniKeyColumns)
     /**
     * 根据唯一索引($!{uniKeyColumn.name})修改数据
@@ -30,7 +30,7 @@
 #end
 #end
 
-#macro(daoUpdate)
+#macro(dao)
 #foreach($uniKeyColumn in $uniKeyColumns)
     /**
     * 根据唯一索引($!{uniKeyColumn.name})修改数据
@@ -44,7 +44,7 @@
 #end
 #end
 
-#macro(mapperUpdate)
+#macro(mapper)
 #foreach($uniKeyColumn in $uniKeyColumns)
     <!--通过唯一索引($!{uniKeyColumn.rawName}))修改数据-->
     <update id="updateBy$!tool.firstUpperCase($!{uniKeyColumn.name})">

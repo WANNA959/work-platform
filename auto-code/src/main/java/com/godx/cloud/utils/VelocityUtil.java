@@ -139,6 +139,18 @@ public class VelocityUtil {
         return res;
     }
 
+    public static String getJdbcType(String type){
+        switch (type){
+            case "INT":
+            case "INT UNSIGNED":
+                return "INTEGER";
+            case "TEXT":
+                return "VARCHAR";
+            default:
+                return type;
+        }
+    }
+
     public static VelocityContext loadContext(Connection conn,String database,String table) throws SQLException {
         //2 创建上下文对象 将数据对象添加到此上下文中
         VelocityContext context = new VelocityContext();
@@ -195,7 +207,7 @@ public class VelocityUtil {
             col.setType(sqlTypeToJava(colunmType));
             col.setComment(columnsRs.getString("REMARKS"));
             Map<String, Object> extMap = new HashMap<>();
-            extMap.put("jdbcType", colunmType);
+            extMap.put("jdbcType", getJdbcType(colunmType));
             col.setExt(extMap);
             log.info(col.toString());
             list.add(col);
@@ -250,11 +262,12 @@ public class VelocityUtil {
     public static Template loadVmTemplate(String fileType) throws IOException, SQLException {
 
         //4选择模板
+        Velocity.getTemplate("./Default/autoUpdate.vm");
         Velocity.getTemplate("./Default/define.vm");
         Velocity.getTemplate("./Default/autoImport.vm");
-        Velocity.getTemplate("./Default/mybatisSupport.vm");
         Velocity.getTemplate("./Default/init.vm");
-        Velocity.getTemplate("./Default/autoUpdate.vm");
+        Velocity.getTemplate("./Default/mybatisSupport.vm");
+
 
         // 可以选择所有字段查询，故此处不再特别生成索引的查询方法
 //        Velocity.getTemplate("./Default/autoSelect.vm");

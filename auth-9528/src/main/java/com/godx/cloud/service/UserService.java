@@ -105,7 +105,8 @@ public class UserService implements constant, UserDetailsService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setType(0);
         user.setStatus(0);
-        user.setActivationCode(IdUtil.simpleUUID());
+        String code=IdUtil.simpleUUID()+'|'+new Date().getTime();
+        user.setActivationCode(code);
         user.setResetCode(IdUtil.simpleUUID());
         user.setHeaderUrl(String.format("http://images.nowcoder.com/head/%dt.png", new Random().nextInt(1000)));
         userDao.insertUser(user);
@@ -139,9 +140,12 @@ public class UserService implements constant, UserDetailsService {
 
     public int activation(int userId, String code) {
         User user = userDao.getUserById(userId);
+        String[] data = Strings.split(code,'|');
+        long beginTime=Long.valueOf(data[1]);
+        long currentTime=new Date().getTime();
         if (user.getStatus() == 1) {
             return ACTIVATION_REPEAT;
-        } else if (user.getActivationCode().equals(code)) {
+        } else if (user.getActivationCode().equals(code) && beginTime+1000*10*60>=currentTime){
             userDao.updateStatusById(userId, 1);
             clearCache(userId);
             return ACTIVATION_SUCCESS;
@@ -292,14 +296,10 @@ public class UserService implements constant, UserDetailsService {
 
     public int modifyPassVerify(int userId, String code) {
         User user = userDao.getUserById(userId);
-        if (user.getStatus() == 1) {
-            return ACTIVATION_REPEAT;
-        } else if (user.getActivationCode().equals(code)) {
-            userDao.updateStatusById(userId, 1);
-            clearCache(userId);
-            return ACTIVATION_SUCCESS;
+        if (user.getResetCode().equals(code)){
+            return MODIFY_SUCCESS;
         } else {
-            return ACTIVATION_FAILURE;
+            return MODIFY_FAILURE;
         }
     }
 

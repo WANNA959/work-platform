@@ -2,6 +2,7 @@ com\godx\cloud\model\DbStruct.class
 com\godx\cloud\model\User.class
 com\godx\cloud\model\DownloadInfo.class
 com\godx\cloud\utils\FileUtil.class
+com\godx\cloud\utils\EnvUtil.class
 com\godx\cloud\model\CommonResult.class
 com\godx\cloud\utils\DbUtil.class
 com\godx\cloud\constant\constant.class

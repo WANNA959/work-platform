@@ -1,6 +1,6 @@
 # 服务端口号
 server:
-  port: 9012
+  port: 9002
 
 # 服务名
 spring:

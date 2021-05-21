@@ -50,9 +50,20 @@ public class DownloadInfoController implements constant {
     }
 
     @GetMapping("/getList")
-    public CommonResult getList(@RequestParam Map<String,Object> request) throws ParseException {
+    public CommonResult getList(@RequestParam Map<String,Object> request,@RequestHeader("Authorization")String token) throws ParseException {
         String tmp=null;
-        int pageNum=0,pageSize=0;
+        String tokenKey = RedisKeyUtil.getTokenKey(token.substring(7));
+        User user =(User) redisTemplate.opsForValue().get(tokenKey);
+        log.info("token: "+tokenKey);
+        int userId=0;
+        if(user!=null){
+            log.info(user.toString());
+            userId=user.getId();
+        } else{
+            log.info("no user in redis");
+            return new CommonResult(STATUS_BADREQUEST,"fail to search");
+        }
+        int pageNum=1,pageSize=10;
         if (request.containsKey("pageNum")){
             tmp =(String)request.get("pageNum");
             pageNum = Integer.parseInt(tmp);
@@ -63,6 +74,7 @@ public class DownloadInfoController implements constant {
         }
 
         Map<String,Object> map=new HashMap<>();
+        map.put("userId",userId);
         if (request.containsKey("host")){
             tmp =(String)request.get("host");
             map.put("host",tmp);

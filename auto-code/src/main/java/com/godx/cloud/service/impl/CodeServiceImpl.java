@@ -82,7 +82,7 @@ public class CodeServiceImpl implements CodeService {
             DownloadInfo info=new DownloadInfo();
             info.setUserId(user.getId());
             info.setOssDetails(fileUrl);
-            info.setFileType("mybatis");
+            info.setFileType("code");
             info.setDbName(database);
             String tableJson = JSON.toJSON(tables).toString();
             info.setTables(tableJson);

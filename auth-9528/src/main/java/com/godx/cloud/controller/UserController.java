@@ -188,15 +188,11 @@ public class UserController implements constant{
         CommonResult result = userService.register(user);
         if ("ok".equals(result.getMessage())){
             result.setMessage("注册成功，我们已经向您的邮箱发送了一封激活邮件，请尽快查看并激活！");
-//            model.addAttribute("msg","注册成功，我们已经向您的邮箱发送了一封激活邮件，请尽快查看并激活！");
-//            model.addAttribute("target",path+"/index");
-//            return "/site/operate-result";
         }
         return result;
     }
 
     // https://localhost:8088/community/activation/id/code
-    //restful格式
     @GetMapping("/oauth/activation/{userId}/{code}")
     public CommonResult activation(@PathVariable("userId") int userId,@PathVariable("code") String code){
 
@@ -206,23 +202,16 @@ public class UserController implements constant{
         if (activation==ACTIVATION_SUCCESS){
             retCode=200;
             res="激活成功！您的账号已经可以正常使用了";
-//            model.addAttribute("msg","激活成功！您的账号已经可以正常使用了");
-//            model.addAttribute("target",path+"/login");
         }
         else if (activation==ACTIVATION_REPEAT){
             retCode=401;
             res="无效的操作，该账号已经激活过了！";
-//            model.addAttribute("msg","无效的操作，该账号已经激活过了！");
-//            model.addAttribute("target",path+"/index");
         }
         else {
             retCode=401;
             res="激活失败！您提供的激活码不正确！";
-//            model.addAttribute("msg","激活失败！您提供的激活码不正确！");
-//            model.addAttribute("target",path+"/index");
         }
         return new CommonResult(retCode,res);
-//        return "/site/operate-result";
     }
 
 //    @PostMapping("/oauth/modifypass")
@@ -254,28 +243,17 @@ public class UserController implements constant{
     public CommonResult modifyPassVerify(@PathVariable("userId") int userId,@PathVariable("code") String code){
 
         int activation = userService.modifyPassVerify(userId, code);
-        String res;
+        String res=null;
         int retCode=0;
-        if (activation==ACTIVATION_SUCCESS){
+        if (activation==MODIFY_SUCCESS){
             retCode=200;
-            res="激活成功！您的账号已经可以正常使用了";
-//            model.addAttribute("msg","激活成功！您的账号已经可以正常使用了");
-//            model.addAttribute("target",path+"/login");
+            res="重置成功！您的账号已经可以正常使用了";
         }
-        else if (activation==ACTIVATION_REPEAT){
+        else if (activation==MODIFY_FAILURE){
             retCode=401;
-            res="无效的操作，该账号已经激活过了！";
-//            model.addAttribute("msg","无效的操作，该账号已经激活过了！");
-//            model.addAttribute("target",path+"/index");
-        }
-        else {
-            retCode=401;
-            res="激活失败！您提供的激活码不正确！";
-//            model.addAttribute("msg","激活失败！您提供的激活码不正确！");
-//            model.addAttribute("target",path+"/index");
+            res="无效的操作！";
         }
         return new CommonResult(retCode,res);
-//        return "/site/operate-result";
     }
 
     @GetMapping("/oauth/forget")
@@ -332,8 +310,6 @@ public class UserController implements constant{
         //不区分大小写
         if (StringUtils.isBlank(kaptcha) || StringUtils.isBlank(code) || !code.equalsIgnoreCase(kaptcha)){
             result.setMessage("验证码不正确！");
-//            model.addAttribute("codeMsg","验证码不正确！");
-//            return "/site/login";
         }
 
         //账号密码
@@ -341,17 +317,13 @@ public class UserController implements constant{
         Map<String, String> map = userService.login(username, password, expired);
         if (map.containsKey("ticket")){
             Cookie cookie=new Cookie("ticket",map.get("ticket").toString());
-//            cookie.setPath(contextPath);//整个项目路径通用
+            cookie.setPath("/");//整个项目路径通用
             cookie.setMaxAge(expired);//失效时间
             response.addCookie(cookie);
             result.setMessage("ok");
-//            return "redirect:/index";
         }
         else {
             result.setMessage(map.get("msg"));
-//            model.addAttribute("usernameMsg",map.get("usernameMsg"));
-//            model.addAttribute("passwordMsg",map.get("passwordMsg"));
-//            return "/site/login";
         }
         return result;
     }
